@@ -111,7 +111,6 @@ def create_pareto(df, category_column, value_column):
         x=df_sorted[category_column],
         y=df_sorted['cumulative_percentage'],
         name='Cumulative Percentage',
-        color='orange',
         yaxis='y2'  # secondary y-axis
     ))
     fig.update_layout(
@@ -179,7 +178,7 @@ def main():
                          (df['End Datetime'].dt.time <= end_time) &
                          ((df['Original Equipment'].isin(selected_equipment)) &
                           (df['Reclassified Equipment'].isin(selected_equipment)))]
-        filtered_df['Duration'] = (filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds() /3600
+        filtered_df['Duration'] = (filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
         
         # Create Pareto diagram for Both Category
         create_pareto(filtered_df, "Original Category", "Duration")
