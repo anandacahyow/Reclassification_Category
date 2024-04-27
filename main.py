@@ -57,7 +57,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     # Create a DataFrame from the list of data
     df_plot = pd.DataFrame(data)
 
-    if y_axis = "Original Equipment":
+    if y_axis == "Original Equipment":
         colour = "Category"
         sub_cat = "Original Sub Category"
     else:
