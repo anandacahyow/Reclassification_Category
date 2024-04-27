@@ -113,6 +113,24 @@ def create_pareto(df, category_column, value_column):
         name='Cumulative Percentage',
         yaxis='y2'  # secondary y-axis
     ))
+    fig.update_layout(
+        title='Pareto Diagram',
+        yaxis=dict(
+            title='Frequency'
+        ),
+        yaxis2=dict(
+            title='Cumulative Percentage (%)',
+            overlaying='y',
+            side='right'
+        ),
+        legend=dict(
+            orientation='h',
+            yanchor='bottom',
+            y=1.02,
+            xanchor='right',
+            x=1
+        )
+    )
     st.plotly_chart(fig)
 
 # Step 2: Create a Streamlit app
