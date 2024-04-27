@@ -107,7 +107,12 @@ def create_pareto(df, category_column, value_column):
         y=df_sorted[value_column],
         name='Frequency'
     ))
-    
+    fig.add_trace(go.Scatter(
+        x=df_sorted[category_column],
+        y=df_sorted['cumulative_percentage'],
+        name='Cumulative Percentage',
+        yaxis='y2'  # secondary y-axis
+    ))
     st.plotly_chart(fig)
 
 # Step 2: Create a Streamlit app
