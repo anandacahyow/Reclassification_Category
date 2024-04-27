@@ -78,7 +78,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                                   "Duration": True,
                                   "PLC Code": True})
     fig.update_yaxes(categoryorder="category ascending")
-    fig.update_layout(title="Duration of Original Categories",
+    fig.update_layout(title=f"Duration of {y_axis}",
                       xaxis_title="Datetime",
                       yaxis_title=y_axis,
                       width = 1200,
