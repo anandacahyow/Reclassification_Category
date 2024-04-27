@@ -80,7 +80,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                       xaxis_title="Datetime",
                       yaxis_title=y_axis,
                       width = 1200,
-                      height = 200)
+                      height = 400)
     st.plotly_chart(fig)
 
 # Step 2: Create a Streamlit app
