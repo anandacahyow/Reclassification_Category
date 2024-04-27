@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from PIL import Image
 
 st.set_page_config(layout="wide")
 img = Image.open('Nestle_Logo.png')
