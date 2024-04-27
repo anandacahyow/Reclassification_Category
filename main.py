@@ -57,7 +57,7 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
     st.write(df_plot)
 
     # Plot the graph using Plotly Express
-    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category",
+    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Original Line",
                       color="Category", color_discrete_map=category_colors,
                       hover_data={"Original Sub Category": True,
                                   "Start Datetime": "|%Y-%m-%d %H:%M:%S",
