@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 
 st.set_page_config(layout="wide")
+img = Image.open('Nestle_Logo.png')
+st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img)
 
 # Step 1: Read the Excel file and preprocess the data
 @st.cache
@@ -121,6 +123,13 @@ def main():
         create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
 
         st.write(df)
+        
+        st.sidebar.image("Nestle_Signature.png")
+        st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory identifying DMO Performance Category reclassification and track complaiance based on based on <b>St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations
+<b></p>""", unsafe_allow_html=True)
+        st.sidebar.write("""<p style='font-size: 13px;'>For any inquiries, error handling, or assistance, please feel free to reach us through Email: <br>
+<a href="mailto:Ananda.Cahyo@id.nestle.com">Ananda.Cahyo@id.nestle.com <br></p>""", unsafe_allow_html=True)
+
 
 if __name__ == "__main__":
     main()
