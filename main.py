@@ -105,7 +105,7 @@ def create_pareto(df, category_column, value_column):
     fig.add_trace(go.Bar(
         x=df_sorted[category_column],
         y=df_sorted[value_column],
-        name='Frequency'
+        name='Hours'
     ))
     fig.add_trace(go.Scatter(
         x=df_sorted[category_column],
@@ -116,7 +116,7 @@ def create_pareto(df, category_column, value_column):
     fig.update_layout(
         title='Pareto Diagram',
         yaxis=dict(
-            title='Frequency'
+            title='Hours'
         ),
         yaxis2=dict(
             title='Cumulative Percentage (%)',
