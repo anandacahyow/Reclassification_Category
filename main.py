@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 from PIL import Image
 
 img = Image.open('Nestle_Logo.png')
@@ -94,13 +95,24 @@ def create_pareto(df, category_column, value_column):
 
     # Calculate cumulative percentage
     df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
-
-    # Plot Pareto diagram
-    fig = px.bar(df_sorted, x=category_column, y=value_column, title=f"Pareto Diagram - {category_column}",
-                 labels={category_column: "Categories", value_column: "Duration (s)"})
-    fig.add_scatter(x=df_sorted[category_column], y=df_sorted["cumulative_percentage"], mode="lines", line=dict(color="red"),
-                    name="Cumulative Percentage")
+    
+    # Plot the main bar chart
+    fig = px.bar(df_sorted, x=category_column, y="Duration (s)", color=category_column,
+                 labels={category_column: "Category", "Duration (s)": "Duration (s)"})
+    
+    # Add a secondary y-axis for the cumulative percentage
+    fig.update_layout(yaxis2=dict(title="Cumulative Percentage", overlaying="y", side="right"))
+    
+    # Add the cumulative percentage line plot
+    fig.add_trace(go.Scatter(x=df_sorted[category_column], y=df_sorted["cumulative_percentage"], mode="lines", 
+                             line=dict(color="red"), name="Cumulative Percentage", yaxis="y2"))
+    
+    # Update layout for better visualization
+    fig.update_layout(title=f"Pareto Diagram for {category_column}", xaxis_title="Category", 
+                      yaxis_title="Duration (s)", legend_title="Legend")
+    
     st.plotly_chart(fig)
+
 
 # Step 2: Create a Streamlit app
 def main():
