@@ -203,7 +203,7 @@ def main():
         with col2:
             create_pareto(filtered_df, "Reclassified Category", "Duration")
         
-        create_waterfall(filtered_df)
+        create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration")
         
         st.sidebar.image("Nestle_Signature.png")
         st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory identifying DMO Performance Category reclassification and track complaiance based on <b>St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations
