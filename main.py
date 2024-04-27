@@ -134,37 +134,19 @@ def create_pareto(df, category_column, value_column):
     )
     st.plotly_chart(fig)
 
-def create_waterfall(df):
-    # Group data by category and calculate the difference
-    df_grouped = df.groupby('Original Category').agg({
-        'Duration': 'sum',
-        'Reclassified Category': 'first'
-    }).reset_index()
+def create_waterfall(df, category_column1, category_column2, value_column):
+    # Group data by category and sum the duration
+    df_grouped1 = df.groupby(category_column1)[value_column].sum().reset_index()
+    # Sort categories based on the sum of duration
+    df_sorted1 = df_grouped1.sort_values(by=value_column, ascending=False)
 
-    df_grouped['Difference'] = df_grouped.groupby('Reclassified Category')['Duration'].transform('sum') - df_grouped['Duration']
+    # Group data by category and sum the duration
+    df_grouped2 = df.groupby(category_column2)[value_column].sum().reset_index()
+    # Sort categories based on the sum of duration
+    df_sorted2 = df_grouped2.sort_values(by=value_column, ascending=False)
 
-    # Sort categories by difference
-    df_grouped = df_grouped.sort_values(by='Difference', ascending=False)
-
-    # Create waterfall diagram
-    waterfall_fig = ff.create_waterfall(
-        x=df_grouped['Reclassified Category'],
-        y=df_grouped['Difference'],
-        measure=["absolute"] * len(df_grouped),
-        textposition="outside",
-        name="Difference"
-    )
-
-    waterfall_fig.update_layout(
-        title="💧 Waterfall Diagram",
-        xaxis_title="Category",
-        yaxis_title="Difference",
-        showlegend=False
-    )
-
-    return waterfall_fig
-
-
+    st.write(df_sorted1)
+    st.write(df_sorted2)
 
 # Step 2: Create a Streamlit app
 def main():
