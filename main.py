@@ -154,22 +154,27 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     st.write(df_sorted2)
     st.write(merged_df)
 
+    categories = merged_df[category_column1]
     values = merged_df['Duration_Difference']
-    cumulative_values = [sum(values[:i+1]) for i in range(len(values))]
-
-    trace = go.Bar(
-        x=df_sorted2[category_column2],
-        y=cumulative_values,
-        marker=dict(color=['green' if val > 0 else 'red' for val in values]),
-        text=values,
-        textposition='outside',
-    )
-    # Create layout
-    layout = go.Layout(
-        title='Waterfall Graph',
+    fig = go.Figure(go.Waterfall(
+        x=categories,
+        y=values,
+        measure=["relative" if val != 10 else "total" for val in values],  # Different measure for each bar
+        base=100,  # Set the base to 100
+        increasing=dict(marker=dict(color="green")),  # Set color for increasing values
+        decreasing=dict(marker=dict(color="red")),  # Set color for decreasing values
+        connector=dict(line=dict(color="grey", width=2)),  # Customize connector line
+        textposition="outside",  # Set text position outside the bars
+        hoverinfo="y+text",  # Display y value and custom text on hover
+    ))
+    # Update layout
+    fig.update_layout(
+        title='Example Waterfall Graph',
         yaxis=dict(title='Value'),
         xaxis=dict(title='Category'),
+        showlegend=True,
     )
+    st.plotly_chart(fig)
     
 
 # Step 2: Create a Streamlit app
