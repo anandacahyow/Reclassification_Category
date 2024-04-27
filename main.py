@@ -167,6 +167,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
         text=[0] + [values[i] - values[i - 1] for i in range(1, len(values))],  # Custom text for each bar
         textposition="outside",  # Set text position outside the bars
         hoverinfo="y+text",  # Display y value and custom text on hover
+        height = 500
     ))
     # Update layout
     fig.update_layout(
