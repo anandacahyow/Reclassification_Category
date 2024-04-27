@@ -181,8 +181,12 @@ def main():
         filtered_df['Duration'] = (1/3600)*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
         
         # Create Pareto diagram for Both Category
-        create_pareto(filtered_df, "Original Category", "Duration")
-        create_pareto(filtered_df, "Reclassified Category", "Duration")
+        col1, col2 = st.columns(2)
+        with col1:
+            create_pareto(filtered_df, "Original Category", "Duration")
+
+        with col2:
+            create_pareto(filtered_df, "Reclassified Category", "Duration")
         
         st.sidebar.image("Nestle_Signature.png")
         st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory identifying DMO Performance Category reclassification and track complaiance based on <b>St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations
