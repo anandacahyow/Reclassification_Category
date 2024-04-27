@@ -11,7 +11,7 @@ def load_data(file_path):
     df['End Datetime'] = pd.to_datetime(df['End Datetime'])
     return df
 
-def create_bar_chart(df):
+def create_bar_chart(df, selected_categories):
     # Create a list of colors corresponding to each category
     category_colors = {
         "Production Time": "green",
@@ -20,9 +20,12 @@ def create_bar_chart(df):
         "Planned Stoppages": "yellow"
     }
 
+    # Filter data based on selected categories
+    filtered_df = df[df['Original Category'].isin(selected_categories)]
+
     # Create a list of data for plotting
     data = []
-    for index, row in df.iterrows():
+    for index, row in filtered_df.iterrows():
         category = row['Original Category']
         start_time = row['Start Datetime']
         end_time = row['End Datetime']
@@ -58,8 +61,12 @@ def main():
         st.write("Sample of the data:")
         st.write(df.head())
 
-        # Create bar chart
-        create_bar_chart(df)
+        # Create a multi-select dropdown for category filter
+        available_categories = df['Original Category'].unique()
+        selected_categories = st.multiselect("Select categories", available_categories, default=available_categories)
+
+        # Create bar chart with filter
+        create_bar_chart(df, selected_categories)
 
 if __name__ == "__main__":
     main()
