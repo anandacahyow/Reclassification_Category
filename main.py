@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objs as go
 from PIL import Image
 
 img = Image.open('Nestle_Logo.png')
@@ -87,42 +86,20 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     st.plotly_chart(fig)
 
 def create_pareto(df, category_column, value_column):
-    # Sort the DataFrame by the value column in descending order
-    df_sorted = df.sort_values(by=value_column, ascending=False)
+    # Group data by category and sum the duration
+    df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
-    # Calculate the cumulative sum of the value column
-    df_sorted['cumulative_sum'] = df_sorted[value_column].cumsum()
+    # Sort categories based on the sum of duration
+    df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
 
-    # Calculate the cumulative percentage
-    df_sorted['cumulative_percentage'] = (df_sorted['cumulative_sum'] / df_sorted[value_column].sum()) * 100
+    # Calculate cumulative percentage
+    df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
 
-    # Create the figure
+    # Plot Pareto diagram
     fig = px.bar(df_sorted, x=category_column, y=value_column, title=f"Pareto Diagram - {category_column}",
-                 labels={category_column: "Categories", value_column: "Frequency"})
-
-    # Add the scatter plot for cumulative percentage as a secondary axis
-    fig.add_trace(go.Scatter(
-        x=df_sorted[category_column],
-        y=df_sorted["cumulative_percentage"],
-        mode="lines",
-        line=dict(color="red"),
-        name="Cumulative Percentage",
-        yaxis="y2"
-    ))
-
-    # Update layout to display secondary axis
-    fig.update_layout(
-        yaxis2=dict(title="Cumulative Percentage", overlaying="y", side="right"),
-        legend=dict(
-            orientation='h',
-            yanchor='bottom',
-            y=1.02,
-            xanchor='right',
-            x=1
-        )
-    )
-
-    # Show the figure
+                 labels={category_column: "Categories", value_column: "Duration (s)"})
+    fig.add_scatter(x=df_sorted[category_column], y=df_sorted["cumulative_percentage"], mode="lines", line=dict(color="red"),
+                    name="Cumulative Percentage")
     st.plotly_chart(fig)
 
 # Step 2: Create a Streamlit app
