@@ -18,10 +18,14 @@ def format_duration(duration):
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories):
+    # Combine date and time inputs into timestamps for filtering
+    start_datetime = pd.Timestamp(start_date.strftime('%Y-%m-%d')) + pd.Timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second)
+    end_datetime = pd.Timestamp(end_date.strftime('%Y-%m-%d')) + pd.Timedelta(hours=end_time.hour, minutes=end_time.minute, seconds=end_time.second)
+    
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                     (df['Start Datetime'] >= pd.Timestamp(start_date.strftime('%Y-%m-%d')) + pd.Timedelta(start_time)) &
-                     (df['End Datetime'] <= pd.Timestamp(end_date.strftime('%Y-%m-%d')) + pd.Timedelta(end_time))]
+                     (df['Start Datetime'] >= start_datetime) &
+                     (df['End Datetime'] <= end_datetime)]
 
     # Create a list of data for plotting
     data = []
