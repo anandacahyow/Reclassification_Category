@@ -52,6 +52,7 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
 
     # Create a DataFrame from the list of data
     df_plot = pd.DataFrame(data)
+    st.write(df_plot)
 
     # Plot the graph using Plotly Express
     fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category",
