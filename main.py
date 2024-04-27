@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+st.beta_set_page_config(layout="wide")
+
 # Step 1: Read the Excel file and preprocess the data
 @st.cache
 def load_data(file_path):
