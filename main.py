@@ -31,15 +31,15 @@ def create_bar_chart(df):
             'Category': category,
             'Start Datetime': start_time,
             'End Datetime': end_time,
-            'Duration': duration,
-            'Color': category_colors.get(category, 'blue')
+            'Duration': duration
         })
 
     # Create a DataFrame from the list of data
     df_plot = pd.DataFrame(data)
 
     # Plot the graph using Plotly Express
-    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category", color="Color")
+    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category",
+                      color="Category", color_discrete_map=category_colors)
     fig.update_yaxes(categoryorder="total ascending")
     fig.update_layout(title="Duration of Original Categories",
                       xaxis_title="Datetime",
