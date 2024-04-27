@@ -11,6 +11,12 @@ def load_data(file_path):
     df['End Datetime'] = pd.to_datetime(df['End Datetime'])
     return df
 
+def format_duration(duration):
+    hours = duration.seconds // 3600
+    minutes = (duration.seconds % 3600) // 60
+    seconds = duration.seconds % 60
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
 def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories):
     # Create a list of colors corresponding to each category
     category_colors = {
@@ -34,11 +40,14 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
         start_time = row['Start Datetime']
         end_time = row['End Datetime']
         duration = end_time - start_time
+        formatted_duration = format_duration(duration)
         data.append({
             'Category': category,
+            'Original Sub Category': row['Original Sub Category'],
             'Start Datetime': start_time,
             'End Datetime': end_time,
-            'Duration': duration
+            'Duration': formatted_duration,
+            'PLC Code': row['PLC Code']
         })
 
     # Create a DataFrame from the list of data
@@ -46,7 +55,12 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
 
     # Plot the graph using Plotly Express
     fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category",
-                      color="Category", color_discrete_map=category_colors)
+                      color="Category", color_discrete_map=category_colors,
+                      hover_data={"Original Sub Category": True,
+                                  "Start Datetime": "|%Y-%m-%d %H:%M:%S",
+                                  "End Datetime": "|%Y-%m-%d %H:%M:%S",
+                                  "Duration": True,
+                                  "PLC Code": True})
     fig.update_yaxes(categoryorder="total ascending")
     fig.update_layout(title="Duration of Original Categories",
                       xaxis_title="Datetime",
