@@ -135,6 +135,7 @@ def create_pareto(df, category_column, value_column):
     st.plotly_chart(fig)
 
 def create_waterfall(df):
+    # Group data by category and calculate the difference
     df_grouped = df.groupby('Original Category').agg({
         'Duration': 'sum',
         'Reclassified Category': 'first'
@@ -144,7 +145,7 @@ def create_waterfall(df):
 
     # Sort categories by difference
     df_grouped = df_grouped.sort_values(by='Difference', ascending=False)
-    
+
     # Create waterfall diagram
     waterfall_fig = ff.create_waterfall(
         x=df_grouped['Reclassified Category'],
@@ -152,15 +153,17 @@ def create_waterfall(df):
         measure=["absolute"] * len(df_grouped),
         textposition="outside",
         name="Difference"
-        )
-    
+    )
+
     waterfall_fig.update_layout(
-            title="💧 Waterfall Diagram",
-            xaxis_title="Category",
-            yaxis_title="Difference",
-            showlegend=False
-        )
-    st.plotly_chart(waterfall_fig)
+        title="💧 Waterfall Diagram",
+        xaxis_title="Category",
+        yaxis_title="Difference",
+        showlegend=False
+    )
+
+    return waterfall_fig
+
 
 
 # Step 2: Create a Streamlit app
