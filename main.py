@@ -4,8 +4,7 @@ import plotly.express as px
 from PIL import Image
 
 img = Image.open('Nestle_Logo.png')
-st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img)
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img,layout="wide")
 
 # Step 1: Read the Excel file and preprocess the data
 @st.cache
