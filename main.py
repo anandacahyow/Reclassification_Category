@@ -114,7 +114,7 @@ def create_pareto(df, category_column, value_column):
         yaxis='y2'  # secondary y-axis
     ))
     fig.update_layout(
-        title='Pareto Diagram',
+        title=f"📋{category_column} Pareto Diagram",
         yaxis=dict(
             title='Hours'
         ),
