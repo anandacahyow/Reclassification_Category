@@ -150,10 +150,10 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     merged_df['Duration_Difference'] = merged_df['Duration_y'] - merged_df['Duration_x']
     merged_df.columns = ['Category', 'Original', 'Reclassified', 'Gap']
 
-    categoriess = merged_df['Category']
-    valuess = merged_df['Gap']
-    categories = ['Ref'] + categoriess
-    values = [0] + valuess
+    categories = ['Ref']
+    values = [0]
+    categories.append(merged_df['Category'])
+    values = append(merged_df['Gap'])
     fig = go.Figure(go.Waterfall(
         x=categories,
         y=values,
