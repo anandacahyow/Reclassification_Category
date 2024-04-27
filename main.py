@@ -148,7 +148,6 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     merged_df = pd.merge(df_sorted1, df_sorted2, left_on=category_column1, right_on=category_column2)
     merged_df.drop(columns=[category_column2], inplace=True)
     merged_df['Duration_Difference'] = merged_df['Duration_y'] - merged_df['Duration_x']    
-    merged_df.drop(columns=['Duration_x', 'Duration_y'], inplace=True)
 
     st.write(df_sorted1)
     st.write(df_sorted2)
@@ -167,7 +166,6 @@ def create_waterfall(df, category_column1, category_column2, value_column):
         text=[0] + [values[i] - values[i - 1] for i in range(1, len(values))],  # Custom text for each bar
         textposition="outside",  # Set text position outside the bars
         hoverinfo="y+text",  # Display y value and custom text on hover
-        height = 500
     ))
     # Update layout
     fig.update_layout(
