@@ -94,7 +94,7 @@ def main():
 
     if uploaded_file is not None:
         df = load_data(uploaded_file)
-        st.sidebar.write("Sample of the data:")
+        st.sidebar.Title("🔍 Data Filter:")
 
         # Create a multi-select dropdown for category filter in the sidebar
         available_categories = df['Original Category'].unique()
@@ -125,7 +125,7 @@ def main():
         st.write(df)
         
         st.sidebar.image("Nestle_Signature.png")
-        st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory identifying DMO Performance Category reclassification and track complaiance based on based on <b>St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations
+        st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory identifying DMO Performance Category reclassification and track complaiance based on <b>St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations
 <b></p>""", unsafe_allow_html=True)
         st.sidebar.write("""<p style='font-size: 13px;'>For any inquiries, error handling, or assistance, please feel free to reach us through Email: <br>
 <a href="mailto:Ananda.Cahyo@id.nestle.com">Ananda.Cahyo@id.nestle.com <br></p>""", unsafe_allow_html=True)
