@@ -18,6 +18,14 @@ def format_duration(duration):
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories):
+    # Create a list of colors corresponding to each category
+    category_colors = {
+        "Production Time": "green",
+        "Unplanned Stoppages": "red",
+        "Not Occupied": "grey",
+        "Planned Stoppages": "yellow"
+    }
+
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
                      (df['Start Datetime'].dt.date >= start_date) &
@@ -28,27 +36,35 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
     # Create a list of data for plotting
     data = []
     for index, row in filtered_df.iterrows():
+        category = row['Original Category']
         start_time = row['Start Datetime']
         end_time = row['End Datetime']
         duration = end_time - start_time
         formatted_duration = format_duration(duration)
         data.append({
+            'Category': category,
+            'Original Sub Category': row['Original Sub Category'],
             'Start Datetime': start_time,
             'End Datetime': end_time,
             'Duration': formatted_duration,
+            'PLC Code': row['PLC Code']
         })
 
     # Create a DataFrame from the list of data
     df_plot = pd.DataFrame(data)
 
     # Plot the graph using Plotly Express
-    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime",
-                      hover_data={"Start Datetime": "|%Y-%m-%d %H:%M:%S",
+    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category",
+                      color="Category", color_discrete_map=category_colors,
+                      hover_data={"Original Sub Category": True,
+                                  "Start Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "End Datetime": "|%Y-%m-%d %H:%M:%S",
-                                  "Duration": True})
-    fig.update_traces(marker=dict(line=dict(width=1, color='black')))
+                                  "Duration": True,
+                                  "PLC Code": True})
+    fig.update_yaxes(categoryorder="total ascending")
     fig.update_layout(title="Duration of Original Categories",
-                      xaxis_title="Datetime")
+                      xaxis_title="Datetime",
+                      yaxis_title="Original Category")
     st.plotly_chart(fig)
 
 # Step 2: Create a Streamlit app
@@ -62,6 +78,10 @@ def main():
         df = load_data(uploaded_file)
         st.write("Sample of the data:")
         st.write(df.head())
+
+        # Create a multi-select dropdown for category filter
+        available_categories = df['Original Category'].unique()
+        selected_categories = st.multiselect("Select categories", available_categories, default=available_categories)
 
         # Arrange date and time filters side by side
         col1, col2 = st.columns(2)
@@ -80,7 +100,7 @@ def main():
             end_time = st.slider("End Time", value=pd.Timestamp("23:59:59").time(), format="HH:mm:ss")
 
         # Create bar chart with filter
-        create_bar_chart(df, start_date, end_date, start_time, end_time, df['Original Category'].unique())
+        create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories)
 
 if __name__ == "__main__":
     main()
