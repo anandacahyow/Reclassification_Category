@@ -18,46 +18,74 @@ def format_duration(duration):
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories):
-    # Combine date and time inputs into timestamps for filtering
-    start_datetime = pd.Timestamp(start_date.strftime('%Y-%m-%d')) + pd.Timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second)
-    end_datetime = pd.Timestamp(end_date.strftime('%Y-%m-%d')) + pd.Timedelta(hours=end_time.hour, minutes=end_time.minute, seconds=end_time.second)
-    
+    # Sort the DataFrame by start time
+    df = df.sort_values(by='Start Datetime')
+
+    # Define category colors
+    category_colors = {
+        "Production Time": "green",
+        "Unplanned Stoppages": "red",
+        "Not Occupied": "grey",
+        "Planned Stoppages": "yellow"
+    }
+
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                     (df['Start Datetime'] >= start_datetime) &
-                     (df['End Datetime'] <= end_datetime)]
+                     (df['Start Datetime'].dt.date >= start_date) &
+                     (df['End Datetime'].dt.date <= end_date) &
+                     (df['Start Datetime'].dt.time >= start_time) &
+                     (df['End Datetime'].dt.time <= end_time)]
 
     # Create a list of data for plotting
     data = []
+    current_color = None
+    current_end = None
     for index, row in filtered_df.iterrows():
         start_time = row['Start Datetime']
         end_time = row['End Datetime']
-        duration = end_time - start_time
-        formatted_duration = format_duration(duration)
+        category = row['Original Category']
+        
+        # Check if current category is different from the previous one
+        if current_color != category_colors[category] or current_end < start_time:
+            if current_end is not None:
+                # Append the previous segment to the data
+                data.append({
+                    'Start Datetime': segment_start,
+                    'End Datetime': current_end,
+                    'Category': current_category,
+                    'Color': current_color
+                })
+
+            # Start a new segment
+            segment_start = start_time
+            current_category = category
+            current_color = category_colors[category]
+
+        # Update the end time of the current segment
+        current_end = max(current_end, end_time) if current_end else end_time
+
+    # Append the last segment to the data
+    if current_end is not None:
         data.append({
-            'Category': row['Original Category'],
-            'Original Sub Category': row['Original Sub Category'],
-            'Start Datetime': start_time,
-            'End Datetime': end_time,
-            'Duration': formatted_duration,
-            'PLC Code': row['PLC Code']
+            'Start Datetime': segment_start,
+            'End Datetime': current_end,
+            'Category': current_category,
+            'Color': current_color
         })
 
     # Create a DataFrame from the list of data
     df_plot = pd.DataFrame(data)
 
     # Plot the graph using Plotly Express
-    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", color="Category",
-                      hover_data={"Category": True,
-                                  "Original Sub Category": True,
-                                  "Start Datetime": "|%Y-%m-%d %H:%M:%S",
+    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category",
+                      color="Color", labels={"Color": "Category"},
+                      hover_data={"Start Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "End Datetime": "|%Y-%m-%d %H:%M:%S",
-                                  "Duration": True,
-                                  "PLC Code": True})
-    fig.update_traces(marker=dict(line=dict(width=1)))
+                                  "Category": True})
     fig.update_yaxes(categoryorder="total ascending")
     fig.update_layout(title="Duration of Original Categories",
-                      xaxis_title="Datetime")
+                      xaxis_title="Datetime",
+                      yaxis_title="Original Category")
     st.plotly_chart(fig)
 
 # Step 2: Create a Streamlit app
