@@ -86,26 +86,26 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     st.plotly_chart(fig)
 
 def create_pareto(df, category_column, value_column):
-    # Group data by category and sum the duration
-    df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
+    # Sort the DataFrame by the value column in descending order
+    df_sorted = df.sort_values(by=value_column, ascending=False)
 
-    # Sort categories based on the sum of duration
-    df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
+    # Calculate the cumulative sum of the value column
+    df_sorted['cumulative_sum'] = df_sorted[value_column].cumsum()
 
-    # Calculate cumulative percentage
-    df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
+    # Calculate the cumulative percentage
+    df_sorted['cumulative_percentage'] = (df_sorted['cumulative_sum'] / df_sorted[value_column].sum()) * 100
 
-    # Plot Pareto diagram
     # Create the figure
     fig = px.bar(df_sorted, x=category_column, y=value_column, title=f"Pareto Diagram - {category_column}",
                  labels={category_column: "Categories", value_column: "Duration (s)"}, secondary_y=False)
-    
+
     # Add the scatter plot for cumulative percentage as a secondary axis
-    fig.add_scatter(x=df_sorted[category_column], y=df_sorted["cumulative_percentage"], mode="lines", line=dict(color="red"),
-                    name="Cumulative Percentage", secondary_y=True)
-    
+    fig.add_scatter(x=df_sorted[category_column], y=df_sorted["cumulative_percentage"], mode="lines",
+                    line=dict(color="red"), name="Cumulative Percentage", secondary_y=True)
+
     # Show the figure
     st.plotly_chart(fig)
+
 
 # Step 2: Create a Streamlit app
 def main():
