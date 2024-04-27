@@ -32,7 +32,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                      (df['End Datetime'].dt.date <= end_date) &
                      (df['Start Datetime'].dt.time >= start_time) &
                      (df['End Datetime'].dt.time <= end_time) &
-                     ((df['Original Equipment'].isin(selected_equipment)) |
+                     ((df['Original Equipment'].isin(selected_equipment)) &
                       (df['Reclassified Equipment'].isin(selected_equipment)))]
 
     # Create a list of data for plotting
@@ -65,7 +65,6 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     else:
         colour = 'Reclassified Category'
         sub_cat = 'Reclassified Sub Category'
-    st.wirte(y_axis)
     # Plot the graph using Plotly Express
     fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y=y_axis,
                       color=colour, color_discrete_map=category_colors,
