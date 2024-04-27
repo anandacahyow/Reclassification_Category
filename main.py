@@ -154,9 +154,12 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     st.write(df_sorted2)
     st.write(merged_df)
 
+    values = merged_df['Duration_Difference']
+    cumulative_values = [sum(values[:i+1]) for i in range(len(values))]
+
     trace = go.Bar(
         x=category_column2,
-        y=merged_df['Duration_Difference'],
+        y=cumulative_values,
         marker=dict(color=['green' if val > 0 else 'red' for val in values]),
         text=values,
         textposition='outside',
