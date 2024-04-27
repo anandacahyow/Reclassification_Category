@@ -88,7 +88,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
 
 def create_pareto(df, category_column, value_column):
     #hourly basis
-    value_column = value_column/3600 #sec to hrs
+    df[value_column] = df[value_column]/3600 #sec to hrs
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
