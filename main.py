@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from PIL import Image
+import plotly.graph_objs as go
 
 img = Image.open('Nestle_Logo.png')
 st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img,layout="wide")
