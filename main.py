@@ -147,11 +147,8 @@ def create_waterfall(df, category_column1, category_column2, value_column):
 
     merged_df = pd.merge(df_sorted1, df_sorted2, left_on=category_column1, right_on=category_column2)
     merged_df.drop(columns=[category_column2], inplace=True)
-    merged_df['Duration_Difference'] = merged_df['Duration_y'] - merged_df['Duration_x']    
-
-    st.write(df_sorted1)
-    st.write(df_sorted2)
-    st.write(merged_df)
+    merged_df['Duration_Difference'] = merged_df['Duration_y'] - merged_df['Duration_x']
+    merged_df.columns = ['Category', 'Original', 'Reclassified', 'Gap']
 
     categories = merged_df[category_column1]
     values = merged_df['Duration_Difference']
@@ -169,12 +166,17 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     ))
     # Update layout
     fig.update_layout(
-        title='Example Waterfall Graph',
+        title='📈 Gap Analysis with Waterfall Graph',
         yaxis=dict(title='Value'),
         xaxis=dict(title='Category'),
         showlegend=True,
     )
-    st.plotly_chart(fig)
+    col1, col2 = st.columns(2)
+        with col1:
+            st.plotly_chart(fig)
+        with col2:
+                st.write(merged_df)
+    
     
 
 # Step 2: Create a Streamlit app
