@@ -152,6 +152,8 @@ def create_waterfall(df, category_column1, category_column2, value_column):
 
     categories = merged_df['Category']
     values = merged_df['Gap']
+    categories = ['Ref'] + categories
+    values = [0] + values
     fig = go.Figure(go.Waterfall(
         x=categories,
         y=values,
