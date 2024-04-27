@@ -65,6 +65,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     else:
         colour = 'Reclassified Category'
         sub_cat = 'Reclassified Sub Category'
+    st.wirte(y_axis)
     # Plot the graph using Plotly Express
     fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y=y_axis,
                       color=colour, color_discrete_map=category_colors,
