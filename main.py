@@ -154,19 +154,18 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     st.write(df_sorted2)
     st.write(merged_df)
 
-    # Create waterfall diagram
-    waterfall_fig = ff.create_waterfall(
-        x=merged_df[category_column2],
+    trace = go.Bar(
+        x=category_column2,
         y=merged_df['Duration_Difference'],
-        measure=["absolute"] * len(df_grouped),
-        textposition="outside",
-        name="Difference"
+        marker=dict(color=['green' if val > 0 else 'red' for val in values]),
+        text=values,
+        textposition='outside',
     )
-    waterfall_fig.update_layout(
-        title="💧 Waterfall Diagram",
-        xaxis_title="Category",
-        yaxis_title="Hours",
-        showlegend=False
+    # Create layout
+    layout = go.Layout(
+        title='Waterfall Graph',
+        yaxis=dict(title='Value'),
+        xaxis=dict(title='Category'),
     )
     
 
