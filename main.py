@@ -97,14 +97,19 @@ def create_pareto(df, category_column, value_column):
 
     # Create the figure
     fig = px.bar(df_sorted, x=category_column, y=value_column, title=f"Pareto Diagram - {category_column}",
-                 labels={category_column: "Categories", value_column: "Duration (s)"}, secondary_y=False)
+                 labels={category_column: "Categories", value_column: "Duration (s)"}, 
+                 secondary_y=False)
 
     # Add the scatter plot for cumulative percentage as a secondary axis
     fig.add_scatter(x=df_sorted[category_column], y=df_sorted["cumulative_percentage"], mode="lines",
                     line=dict(color="red"), name="Cumulative Percentage", secondary_y=True)
 
+    # Update layout to display secondary axis
+    fig.update_layout(yaxis2=dict(title="Cumulative Percentage", overlaying="y", side="right"))
+
     # Show the figure
     st.plotly_chart(fig)
+
 
 
 # Step 2: Create a Streamlit app
