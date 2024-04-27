@@ -96,7 +96,7 @@ def main():
         selected_categories = st.multiselect("Select categories", available_categories, default=available_categories)
 
         # Create a multi-select dropdown for equipment filter
-        available_equipment = df['Original Equipment'].unique()
+        available_equipment = df['Reclassified Equipment'].unique()
         selected_equipment = st.multiselect("Select equipment", available_equipment, default=available_equipment)
 
         # Arrange date and time filters side by side
