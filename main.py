@@ -69,17 +69,21 @@ def main():
         available_categories = df['Original Category'].unique()
         selected_categories = st.multiselect("Select categories", available_categories, default=available_categories)
 
-        # Create date range picker for filtering by date
-        start_date = st.date_input("Start Date", min_value=df['Start Datetime'].min().date(),
-                                   max_value=df['End Datetime'].max().date(),
-                                   value=df['Start Datetime'].min().date())
-        end_date = st.date_input("End Date", min_value=df['Start Datetime'].min().date(),
-                                 max_value=df['End Datetime'].max().date(),
-                                 value=df['End Datetime'].max().date())
+        # Arrange date and time filters side by side
+        col1, col2 = st.columns(2)
+        with col1:
+            # Create date range picker for filtering by date
+            start_date = st.date_input("Start Date", min_value=df['Start Datetime'].min().date(),
+                                       max_value=df['End Datetime'].max().date(),
+                                       value=df['Start Datetime'].min().date())
+            end_date = st.date_input("End Date", min_value=df['Start Datetime'].min().date(),
+                                     max_value=df['End Datetime'].max().date(),
+                                     value=df['End Datetime'].max().date())
 
-        # Create time sliders for filtering by time
-        start_time = st.slider("Start Time", value=pd.Timestamp("00:00").time(), format="HH:mm:ss")
-        end_time = st.slider("End Time", value=pd.Timestamp("23:59:59").time(), format="HH:mm:ss")
+        with col2:
+            # Create time sliders for filtering by time
+            start_time = st.slider("Start Time", value=pd.Timestamp("00:00").time(), format="HH:mm:ss")
+            end_time = st.slider("End Time", value=pd.Timestamp("23:59:59").time(), format="HH:mm:ss")
 
         # Create bar chart with filter
         create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories)
