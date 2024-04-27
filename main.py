@@ -104,7 +104,7 @@ def main():
         create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, "Original Equipment")
 
         # Create bar chart with filter for Reclassified Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, "Reclassified Category")
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, "Reclassified Equipment")
 
 if __name__ == "__main__":
     main()
