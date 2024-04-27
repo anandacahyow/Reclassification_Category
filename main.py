@@ -145,8 +145,12 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     # Sort categories based on the sum of duration
     df_sorted2 = df_grouped2.sort_values(by=value_column, ascending=False)
 
+    df_diff = df_sorted2.sub(df_sorted1)
+
     st.write(df_sorted1)
     st.write(df_sorted2)
+    st.write(df_diff)
+    
 
 # Step 2: Create a Streamlit app
 def main():
