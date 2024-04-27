@@ -97,7 +97,7 @@ def create_pareto(df, category_column, value_column):
 
     # Plot Pareto diagram
     fig = px.bar(df_sorted, x=category_column, y="Duration", color=category_column,
-                 title=f"Pareto Diagram for {category_name}",
+                 title=f"Pareto Diagram for {category_column}",
                  labels={category_column: "Category", "Duration": "Duration (s)"},
                  color_discrete_sequence=px.colors.qualitative.Pastel)
     
