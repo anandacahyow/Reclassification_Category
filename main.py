@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from PIL import Image
 import plotly.graph_objs as go
+import plotly.figure_factory as ff
 
 img = Image.open('Nestle_Logo.png')
 st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img,layout="wide")
@@ -133,6 +134,35 @@ def create_pareto(df, category_column, value_column):
     )
     st.plotly_chart(fig)
 
+def create_waterfall(df):
+    df_grouped = df.groupby('Original Category').agg({
+        'Duration': 'sum',
+        'Reclassified Category': 'first'
+    }).reset_index()
+
+    df_grouped['Difference'] = df_grouped.groupby('Reclassified Category')['Duration'].transform('sum') - df_grouped['Duration']
+
+    # Sort categories by difference
+    df_grouped = df_grouped.sort_values(by='Difference', ascending=False)
+    
+    # Create waterfall diagram
+    waterfall_fig = ff.create_waterfall(
+        x=df_grouped['Reclassified Category'],
+        y=df_grouped['Difference'],
+        measure=["absolute"] * len(df_grouped),
+        textposition="outside",
+        name="Difference"
+        )
+    
+    waterfall_fig.update_layout(
+            title="💧 Waterfall Diagram",
+            xaxis_title="Category",
+            yaxis_title="Difference",
+            showlegend=False
+        )
+    st.plotly_chart(waterfall_fig)
+
+
 # Step 2: Create a Streamlit app
 def main():
     st.title("📊 DMO Performance Reclassification Checking Tools")
@@ -187,6 +217,8 @@ def main():
 
         with col2:
             create_pareto(filtered_df, "Reclassified Category", "Duration")
+        
+        create_waterfall(filtered_df)
         
         st.sidebar.image("Nestle_Signature.png")
         st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory identifying DMO Performance Category reclassification and track complaiance based on <b>St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations
