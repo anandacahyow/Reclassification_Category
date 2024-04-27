@@ -42,6 +42,7 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
         duration = end_time - start_time
         formatted_duration = format_duration(duration)
         data.append({
+            'Original Line': row['Original Line'],
             'Category': category,
             'Original Sub Category': row['Original Sub Category'],
             'Start Datetime': start_time,
@@ -49,6 +50,7 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
             'Duration': formatted_duration,
             'PLC Code': row['PLC Code']
         })
+
 
     # Create a DataFrame from the list of data
     df_plot = pd.DataFrame(data)
