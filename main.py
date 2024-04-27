@@ -147,9 +147,8 @@ def create_waterfall(df, category_column1, category_column2, value_column):
 
     merged_df = pd.merge(df_sorted1, df_sorted2, left_on=category_column1, right_on=category_column2)
     merged_df.drop(columns=[category_column2], inplace=True)
-    #merged_df['Duration_Difference'] = merged_df['Duration_x'] - merged_df['Duration_y']    
-    # Drop the redundant duration columns
-    #merged_df.drop(columns=['Duration_x', 'Duration_y'], inplace=True)
+    merged_df['Duration_Difference'] = merged_df['Duration_x'] - merged_df['Duration_y']    
+    merged_df.drop(columns=['Duration_x', 'Duration_y'], inplace=True)
 
     st.write(df_sorted1)
     st.write(df_sorted2)
