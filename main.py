@@ -81,10 +81,10 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
 
 # Step 2: Create a Streamlit app
 def main():
-    st.title("Streamlit App for Visualizing Original Categories Duration")
+    st.title("📊 DMO Performance Reclassification Checking Tools")
 
     # Upload file
-    uploaded_file = st.sidebar.file_uploader("Upload Excel file", type=["xlsx", "xls"])
+    uploaded_file = st.file_uploader("Upload Excel file", type=["xlsx", "xls"])
 
     if uploaded_file is not None:
         df = load_data(uploaded_file)
