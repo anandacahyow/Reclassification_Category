@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
+import plotly.graph_objs as go
 
 # Read the Excel file
 df = pd.read_excel("your_file.xlsx")
@@ -21,32 +20,32 @@ color_map = {
 # Add a new column for colors
 df['Color'] = df['Original Category'].map(color_map)
 
-# Create the graph
-fig, ax = plt.subplots()
+# Create traces for each category
+data = []
 for i, row in df.iterrows():
-    ax.barh(i, width=(row['End Datetime'] - row['Start Datetime']), left=row['Start Datetime'], color=row['Color'])
+    trace = go.Bar(
+        y=[row['Original Category']],
+        x=[(row['End Datetime'] - row['Start Datetime']).total_seconds() / 3600],  # Duration in hours
+        orientation='h',
+        marker=dict(color=row['Color']),
+        name=row['Original Category']
+    )
+    data.append(trace)
 
-# Format x-axis as datetime
-ax.xaxis_date()
+# Layout
+layout = go.Layout(
+    title='Duration of Original Categories',
+    yaxis=dict(
+        title='Original Category'
+    ),
+    xaxis=dict(
+        title='Duration (hours)'
+    ),
+    barmode='stack'
+)
 
-# Set x-axis label
-ax.set_xlabel('Datetime')
-
-# Set y-axis label
-ax.set_ylabel('Original Category')
-
-# Set y-ticks and labels
-ax.set_yticks(df.index)
-ax.set_yticklabels(df['Original Category'])
-
-# Set the title
-ax.set_title('Duration of Original Categories')
-
-# Rotate x-axis labels for better readability
-plt.xticks(rotation=45)
-
-# Remove gridlines
-plt.grid(False)
+# Create the figure
+fig = go.Figure(data=data, layout=layout)
 
 # Show the plot
-st.pyplot(fig)
+st.plotly_chart(fig)
