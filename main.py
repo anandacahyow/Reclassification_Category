@@ -36,13 +36,12 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
     # Create a list of data for plotting
     data = []
     for index, row in filtered_df.iterrows():
-        category = row['Original Category']
         start_time = row['Start Datetime']
         end_time = row['End Datetime']
         duration = end_time - start_time
         formatted_duration = format_duration(duration)
         data.append({
-            'Category': category,
+            'Category': row['Original Category'],
             'Original Sub Category': row['Original Sub Category'],
             'Start Datetime': start_time,
             'End Datetime': end_time,
@@ -54,13 +53,15 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
     df_plot = pd.DataFrame(data)
 
     # Plot the graph using Plotly Express
-    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category",
-                      color="Category", color_discrete_map=category_colors,
-                      hover_data={"Original Sub Category": True,
+    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", color="Category",
+                      color_discrete_map=category_colors,
+                      hover_data={"Category": True,
+                                  "Original Sub Category": True,
                                   "Start Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "End Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "Duration": True,
                                   "PLC Code": True})
+    fig.update_traces(marker=dict(line=dict(width=1, color='black')))
     fig.update_yaxes(categoryorder="total ascending")
     fig.update_layout(title="Duration of Original Categories",
                       xaxis_title="Datetime",
