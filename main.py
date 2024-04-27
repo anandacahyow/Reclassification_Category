@@ -57,10 +57,16 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     # Create a DataFrame from the list of data
     df_plot = pd.DataFrame(data)
 
+    if y_axis = "Original Equipment":
+        colour = "Category"
+        sub_cat = "Original Sub Category"
+    else:
+        colour = 'Reclassified Category'
+        sub_cat = 'Reclassified Sub Category'
     # Plot the graph using Plotly Express
     fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y=y_axis,
-                      color="Category", color_discrete_map=category_colors,
-                      hover_data={"Original Sub Category": True,
+                      color=colour, color_discrete_map=category_colors,
+                      hover_data={sub_cat: True,
                                   "Start Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "End Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "Duration": True,
