@@ -152,8 +152,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
 
     categories = list(['Ref']) + merged_df['Category'].tolist()
     values = list([0]) + merged_df['Gap'].tolist()
-    st.write(categories)
-    st.write(values)
+
     fig = go.Figure(go.Waterfall(
         x=categories,
         y=values,
@@ -175,6 +174,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     )
     col1, col2 = st.columns(2)
     with col1:
+        st.write("▶ Total Duration (s) of Original Vs Reclassification per Performance Category")
         st.write(merged_df)
     with col2:
         st.plotly_chart(fig)
