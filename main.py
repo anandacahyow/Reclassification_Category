@@ -172,10 +172,10 @@ def create_waterfall(df, category_column1, category_column2, value_column):
         showlegend=True,
     )
     col1, col2 = st.columns(2)
-        with col1:
-            st.plotly_chart(fig)
-        with col2:
-                st.write(merged_df)
+    with col1:
+        st.plotly_chart(fig)
+    with col2:
+        st.write(merged_df)
     
     
 
