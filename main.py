@@ -87,6 +87,8 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     st.plotly_chart(fig)
 
 def create_pareto(df, category_column, value_column):
+    #hourly basis
+    value_column = value_column/3600 #sec to hrs
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
@@ -111,6 +113,7 @@ def create_pareto(df, category_column, value_column):
         x=df_sorted[category_column],
         y=df_sorted['cumulative_percentage'],
         name='Cumulative Percentage',
+        color='orange',
         yaxis='y2'  # secondary y-axis
     ))
     fig.update_layout(
