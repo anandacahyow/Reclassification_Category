@@ -79,7 +79,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                                   "Duration": True,
                                   "PLC Code": True})
     fig.update_yaxes(categoryorder="category ascending")
-    fig.update_layout(title=f"Duration of {y_axis}",
+    fig.update_layout(title=f"🕔 Duration of {y_axis}",
                       xaxis_title="Datetime",
                       yaxis_title=y_axis,
                       width = 1200,
@@ -114,7 +114,7 @@ def create_pareto(df, category_column, value_column):
         yaxis='y2'  # secondary y-axis
     ))
     fig.update_layout(
-        title=f"📋{category_column} Pareto Diagram",
+        title=f"✅ {category_column} Pareto Diagram",
         yaxis=dict(
             title='Hours'
         ),
