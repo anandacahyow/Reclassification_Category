@@ -79,7 +79,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     fig.update_layout(title="Duration of Original Categories",
                       xaxis_title="Datetime",
                       yaxis_title=y_axis,
-                      width = 1500)
+                      width = 1200)
     st.plotly_chart(fig)
 
 # Step 2: Create a Streamlit app
