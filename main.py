@@ -158,7 +158,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     cumulative_values = [sum(values[:i+1]) for i in range(len(values))]
 
     trace = go.Bar(
-        x=category_column2,
+        x=df_sorted2[category_column2],
         y=cumulative_values,
         marker=dict(color=['green' if val > 0 else 'red' for val in values]),
         text=values,
