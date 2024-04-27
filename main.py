@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import plotly.graph_objs as go
+import plotly.figure_factory as ff
 
 # File uploader widget
 uploaded_file = st.file_uploader("Upload Excel file", type=["xlsx"])
@@ -24,32 +24,17 @@ if uploaded_file is not None:
     # Add a new column for colors
     df['Color'] = df['Original Category'].map(color_map)
 
-    # Create traces for each category
-    data = []
-    for i, row in df.iterrows():
-        trace = go.Bar(
-            y=[row['Original Category']],
-            x=[(row['End Datetime'] - row['Start Datetime']).total_seconds() / 3600],  # Duration in hours
-            orientation='h',
-            marker=dict(color=row['Color']),
-            name=row['Original Category']
-        )
-        data.append(trace)
+    # Prepare data for the timeline plot
+    df['Task'] = df['Original Category']
+    df['Start'] = df['Start Datetime']
+    df['Finish'] = df['End Datetime']
+    df['Color'] = df['Color']
 
-    # Layout
-    layout = go.Layout(
-        title='Duration of Original Categories',
-        yaxis=dict(
-            title='Original Category'
-        ),
-        xaxis=dict(
-            title='Duration (hours)'
-        ),
-        barmode='stack'
-    )
+    # Create the timeline plot
+    fig = ff.create_gantt(df, colors='Color', index_col='Task', show_colorbar=True, group_tasks=True)
 
-    # Create the figure
-    fig = go.Figure(data=data, layout=layout)
+    # Update layout
+    fig.update_layout(title='Timeline of Events', xaxis_title='Time', yaxis_title='Category')
 
     # Show the plot
     st.plotly_chart(fig)
