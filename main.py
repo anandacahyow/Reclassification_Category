@@ -147,12 +147,27 @@ def create_waterfall(df, category_column1, category_column2, value_column):
 
     merged_df = pd.merge(df_sorted1, df_sorted2, left_on=category_column1, right_on=category_column2)
     merged_df.drop(columns=[category_column2], inplace=True)
-    merged_df['Duration_Difference'] = merged_df['Duration_x'] - merged_df['Duration_y']    
+    merged_df['Duration_Difference'] = merged_df['Duration_y'] - merged_df['Duration_x']    
     merged_df.drop(columns=['Duration_x', 'Duration_y'], inplace=True)
 
     st.write(df_sorted1)
     st.write(df_sorted2)
     st.write(merged_df)
+
+    # Create waterfall diagram
+    waterfall_fig = ff.create_waterfall(
+        x=merged_df[category_column2],
+        y=merged_df['Duration_Difference'],
+        measure=["absolute"] * len(df_grouped),
+        textposition="outside",
+        name="Difference"
+    )
+    waterfall_fig.update_layout(
+        title="💧 Waterfall Diagram",
+        xaxis_title="Category",
+        yaxis_title="Hours",
+        showlegend=False
+    )
     
 
 # Step 2: Create a Streamlit app
