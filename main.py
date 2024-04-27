@@ -173,12 +173,10 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     )
     col1, col2 = st.columns(2)
     with col1:
-        st.plotly_chart(fig)
-    with col2:
         st.write(merged_df)
-    
-    
-
+    with col2:
+        st.plotly_chart(fig)
+        
 # Step 2: Create a Streamlit app
 def main():
     st.title("📊 DMO Performance Reclassification Checking Tools")
