@@ -17,7 +17,7 @@ def format_duration(duration):
     seconds = duration.seconds % 60
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories):
+def create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, y_axis):
     # Create a list of colors corresponding to each category
     category_colors = {
         "Production Time": "green",
@@ -51,13 +51,11 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
             'PLC Code': row['PLC Code']
         })
 
-
     # Create a DataFrame from the list of data
     df_plot = pd.DataFrame(data)
-    st.write(df_plot)
 
     # Plot the graph using Plotly Express
-    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Original Equipment",
+    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y=y_axis,
                       color="Category", color_discrete_map=category_colors,
                       hover_data={"Original Sub Category": True,
                                   "Start Datetime": "|%Y-%m-%d %H:%M:%S",
@@ -102,8 +100,11 @@ def main():
             start_time = st.slider("Start Time", value=pd.Timestamp("00:00").time(), format="HH:mm:ss")
             end_time = st.slider("End Time", value=pd.Timestamp("23:59:59").time(), format="HH:mm:ss")
 
-        # Create bar chart with filter
-        create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories)
+        # Create bar chart with filter for Original Category
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, "Original Equipment")
+
+        # Create bar chart with filter for Reclassified Category
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, "Reclassified Category")
 
 if __name__ == "__main__":
     main()
