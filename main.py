@@ -87,8 +87,6 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     st.plotly_chart(fig)
 
 def create_pareto(df, category_column, value_column):
-    #hourly basis
-    df[value_column] = df[value_column]/3600 #sec to hrs
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
@@ -181,7 +179,7 @@ def main():
                          (df['End Datetime'].dt.time <= end_time) &
                          ((df['Original Equipment'].isin(selected_equipment)) &
                           (df['Reclassified Equipment'].isin(selected_equipment)))]
-        filtered_df['Duration'] = (filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
+        filtered_df['Duration'] = (filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds() /3600
         
         # Create Pareto diagram for Both Category
         create_pareto(filtered_df, "Original Category", "Duration")
