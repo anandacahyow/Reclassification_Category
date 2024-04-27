@@ -94,7 +94,7 @@ def main():
 
     if uploaded_file is not None:
         df = load_data(uploaded_file)
-        st.sidebar.Title("🔍 Data Filter:")
+        st.sidebar.title("🔍 Data Filter:")
 
         # Create a multi-select dropdown for category filter in the sidebar
         available_categories = df['Original Category'].unique()
