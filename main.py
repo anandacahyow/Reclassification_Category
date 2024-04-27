@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objs as go
 from PIL import Image
 
 img = Image.open('Nestle_Logo.png')
