@@ -32,7 +32,7 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
                      (df['End Datetime'].dt.date <= end_date) &
                      (df['Start Datetime'].dt.time >= start_time) &
                      (df['End Datetime'].dt.time <= end_time) &
-                     (df['Reclassified Equipment'].isin(selected_equipment))]
+                     (df['Original Equipment'].isin(selected_equipment) | df['Reclassified Equipment'].isin(selected_equipment))]
 
     # Create a list of data for plotting
     data = []
@@ -57,9 +57,9 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
     df_plot = pd.DataFrame(data)
 
     # Plot the graph using Plotly Express
-    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Reclassified Equipment",
+    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Original Equipment",
                       color="Category", color_discrete_map=category_colors,
-                      hover_data={"Original Equipment": True,
+                      hover_data={"Reclassified Equipment": True,
                                   "Original Sub Category": True,
                                   "Start Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "End Datetime": "|%Y-%m-%d %H:%M:%S",
@@ -68,7 +68,7 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
     fig.update_yaxes(categoryorder="total ascending")
     fig.update_layout(title="Duration of Original Categories",
                       xaxis_title="Datetime",
-                      yaxis_title="Reclassified Equipment")
+                      yaxis_title="Equipment")
     st.plotly_chart(fig)
 
 # Step 2: Create a Streamlit app
@@ -88,8 +88,8 @@ def main():
         selected_categories = st.multiselect("Select categories", available_categories, default=available_categories)
 
         # Create a multi-select dropdown for equipment filter
-        available_equipment = df['Reclassified Equipment'].unique()
-        selected_equipment = st.multiselect("Select reclassified equipment", available_equipment, default=available_equipment)
+        available_equipment = df['Original Equipment'].unique()
+        selected_equipment = st.multiselect("Select equipment", available_equipment, default=available_equipment)
 
         # Arrange date and time filters side by side
         col1, col2 = st.columns(2)
