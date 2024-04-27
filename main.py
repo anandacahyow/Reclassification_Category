@@ -93,7 +93,6 @@ def main():
     if uploaded_file is not None:
         df = load_data(uploaded_file)
         st.sidebar.write("Sample of the data:")
-        st.sidebar.write(df.head())
 
         # Create a multi-select dropdown for category filter in the sidebar
         available_categories = df['Original Category'].unique()
@@ -120,6 +119,8 @@ def main():
 
         # Create bar chart with filter for Reclassified Category
         create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
+
+        st.write(df)
 
 if __name__ == "__main__":
     main()
