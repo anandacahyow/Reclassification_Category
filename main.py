@@ -103,8 +103,8 @@ def create_pareto(df, category_column, value_column):
     fig = go.Figure()
     # Add bars for frequencies
     fig.add_trace(go.Bar(
-        x=df_sorted['Categories'],
-        y=df_sorted['Frequency'],
+        x=df_sorted[category_column],
+        y=df_sorted[value_column],
         name='Frequency'
     ))
     
