@@ -18,14 +18,6 @@ def format_duration(duration):
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_categories):
-    # Create a list of colors corresponding to each category
-    category_colors = {
-        "Production Time": "green",
-        "Unplanned Stoppages": "red",
-        "Not Occupied": "grey",
-        "Planned Stoppages": "yellow"
-    }
-
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
                      (df['Start Datetime'].dt.date >= start_date) &
@@ -54,13 +46,13 @@ def create_bar_chart(df, start_date, end_date, start_time, end_time, selected_ca
     df_plot = pd.DataFrame(data)
 
     # Plot the graph using Plotly Express
-    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Category",
-                      color="Category", color_discrete_map=category_colors,
-                      hover_data={"Original Sub Category": True,
-                                  "Start Datetime": "|%Y-%m-%d %H:%M:%S",
-                                  "End Datetime": "|%Y-%m-%d %H:%M:%S",
-                                  "Duration": True,
-                                  "PLC Code": True})
+    fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y="Original Category",
+                      color="Original Category", hover_data={"Original Sub Category": True,
+                                                              "Start Datetime": "|%Y-%m-%d %H:%M:%S",
+                                                              "End Datetime": "|%Y-%m-%d %H:%M:%S",
+                                                              "Duration": True,
+                                                              "PLC Code": True})
+    fig.update_traces(marker=dict(line=dict(width=1, color='black')))
     fig.update_yaxes(categoryorder="total ascending")
     fig.update_layout(title="Duration of Original Categories",
                       xaxis_title="Datetime",
