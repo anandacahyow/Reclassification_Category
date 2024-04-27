@@ -32,7 +32,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                      (df['End Datetime'].dt.date <= end_date) &
                      (df['Start Datetime'].dt.time >= start_time) &
                      (df['End Datetime'].dt.time <= end_time) &
-                     ((df['Original Equipment'].isin(selected_equipment)) &
+                     ((df['Original Equipment'].isin(selected_equipment)) |
                       (df['Reclassified Equipment'].isin(selected_equipment)))]
 
     # Create a list of data for plotting
@@ -84,36 +84,32 @@ def main():
     st.title("Streamlit App for Visualizing Original Categories Duration")
 
     # Upload file
-    uploaded_file = st.file_uploader("Upload Excel file", type=["xlsx", "xls"])
+    uploaded_file = st.sidebar.file_uploader("Upload Excel file", type=["xlsx", "xls"])
 
     if uploaded_file is not None:
         df = load_data(uploaded_file)
-        st.write("Sample of the data:")
-        st.write(df.head())
+        st.sidebar.write("Sample of the data:")
+        st.sidebar.write(df.head())
 
-        # Create a multi-select dropdown for category filter
+        # Create a multi-select dropdown for category filter in the sidebar
         available_categories = df['Original Category'].unique()
-        selected_categories = st.multiselect("Select categories", available_categories, default=available_categories)
+        selected_categories = st.sidebar.multiselect("Select categories", available_categories, default=available_categories)
 
-        # Create a multi-select dropdown for equipment filter
+        # Create a multi-select dropdown for equipment filter in the sidebar
         available_equipment = df['Reclassified Equipment'].unique()
-        selected_equipment = st.multiselect("Select equipment", available_equipment, default=available_equipment)
+        selected_equipment = st.sidebar.multiselect("Select equipment", available_equipment, default=available_equipment)
 
-        # Arrange date and time filters side by side
-        col1, col2 = st.columns(2)
-        with col1:
-            # Create date range picker for filtering by date
-            start_date = st.date_input("Start Date", min_value=df['Start Datetime'].min().date(),
+        # Create date range picker for filtering by date in the sidebar
+        start_date = st.sidebar.date_input("Start Date", min_value=df['Start Datetime'].min().date(),
                                        max_value=df['End Datetime'].max().date(),
                                        value=df['Start Datetime'].min().date())
-            end_date = st.date_input("End Date", min_value=df['Start Datetime'].min().date(),
+        end_date = st.sidebar.date_input("End Date", min_value=df['Start Datetime'].min().date(),
                                      max_value=df['End Datetime'].max().date(),
                                      value=df['End Datetime'].max().date())
 
-        with col2:
-            # Create time sliders for filtering by time
-            start_time = st.slider("Start Time", value=pd.Timestamp("00:00").time(), format="HH:mm:ss")
-            end_time = st.slider("End Time", value=pd.Timestamp("23:59:59").time(), format="HH:mm:ss")
+        # Create time sliders for filtering by time in the sidebar
+        start_time = st.sidebar.slider("Start Time", value=pd.Timestamp("00:00").time(), format="HH:mm:ss")
+        end_time = st.sidebar.slider("End Time", value=pd.Timestamp("23:59:59").time(), format="HH:mm:ss")
 
         # Create bar chart with filter for Original Category
         create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
