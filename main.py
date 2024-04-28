@@ -25,6 +25,7 @@ def format_duration(duration):
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 def create_timeline(df, start_date, end_date, selected_categories, selected_equipment, y_axis):
+    st.write(f"create timeline: {start_date} || {end_date}")
     # Create a list of colors corresponding to each category
     category_colors = {
         "Production Time": "green",
@@ -241,6 +242,7 @@ def main():
                         
         combined_start_datetime = datetime.combine(start_date, start_time)
         combined_end_datetime = datetime.combine(end_date, end_time)
+        st.write(f"{combined_start_datetime} || {combined_end_datetime}")
         
         filtered_df = df[(df['Original Category'].isin(selected_categories)) &
                          (df['Start Datetime'] >= combined_start_datetime) &
