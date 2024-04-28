@@ -24,7 +24,7 @@ def format_duration(duration):
     seconds = duration.seconds % 60
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-def create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, y_axis):
+def create_timeline(df, start_date, end_date, selected_categories, selected_equipment, y_axis):
     # Create a list of colors corresponding to each category
     category_colors = {
         "Production Time": "green",
@@ -32,22 +32,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
         "Not Occupied": "grey",
         "Planned Stoppages": "yellow"
     }
-
-    # Combine start datetime with start time and end datetime with end time
-    combined_start_datetime = datetime.combine(start_date, start_time)
-    combined_end_datetime = datetime.combine(end_date, end_time)
-    #st.write(combined_start_datetime)
-    #st.write(combined_end_datetime)
-
-    # Filter data based on selected categories and date range
-    filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                     (df['Start Datetime'] >= combined_start_datetime) &
-                     (df['End Datetime'] <= combined_end_datetime) &
-                     ((df['Original Equipment'].isin(selected_equipment)) &
-                      (df['Reclassified Equipment'].isin(selected_equipment)))]
-    st.write(filtered_df['Start Datetime'][0])
-    st.write(filtered_df['End Datetime'])
-
+    filtered_df = df
     # Create a list of data for plotting
     data = []
     for index, row in filtered_df.iterrows():
@@ -272,9 +257,9 @@ def main():
         filtered_df['Duration'] = time_factor*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
 
         # Create bar chart with filter for Original Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
+        create_timeline(filtered_df, combined_start_datetime, combined_end_datetime, selected_categories, selected_equipment, "Original Equipment")
         # Create bar chart with filter for Reclassified Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
+        create_timeline(filtered_df, combined_start_datetime, combined_end_datetime, selected_categories, selected_equipment, "Reclassified Equipment")
         
         st.write("📅 DMO Event Listing")
         st.dataframe(filtered_df, height=150)
