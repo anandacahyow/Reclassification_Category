@@ -214,7 +214,7 @@ def main():
         # Create a multi-select dropdown for equipment filter in the sidebar
         available_equipment = df['Reclassified Equipment'].unique()
         #selected_equipment = st.sidebar.multiselect("Select equipment", available_equipment, default=available_equipment)
-        st.sidebar.write("Choose Equipment(s):")
+        st.sidebar.write("🛠 Choose Equipment(s):")
         selected_equipment = [category for category in available_equipment if st.sidebar.checkbox(category, value=True)]
 
         # Create date range picker for filtering by date in the sidebar
