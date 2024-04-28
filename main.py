@@ -156,6 +156,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     merged_df = merged_df.sort_values(by='Gap',ascending=False)
     categories = merged_df['Category'].tolist()
     values = merged_df['Gap'].tolist()
+    values = [round(num, 2) for num in values]
     
     fig = go.Figure(go.Waterfall(
         x=categories,
@@ -173,10 +174,10 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     # Update layout
     fig.update_layout(
         title='📈 Gap Analysis with Waterfall Graph',
-        yaxis=dict(title='Value'),
+        yaxis=dict(title='Hours'),
         xaxis=dict(title='Category'),
         showlegend=True,
-        height=500
+        height=600
     )
     col1, col2 = st.columns(2)
     with col1:
