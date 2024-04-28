@@ -33,8 +33,8 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     }
 
     # Combine start date with start time and end date with end time
-    start_datetime = pd.to_datetime(start_date) + pd.to_timedelta(start_time)
-    end_datetime = pd.to_datetime(end_date) + pd.to_timedelta(end_time)
+    start_datetime = pd.to_datetime(start_date + " " + start_time)
+    end_datetime = pd.to_datetime(end_date + " " + end_time)
 
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
@@ -88,7 +88,6 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                       width=1200,
                       height=400)
     st.plotly_chart(fig)
-
 
 def create_pareto(df, category_column, value_column,duration_type):
     # Group data by category and sum the duration
