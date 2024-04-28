@@ -34,11 +34,6 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     }
 
     # Combine start datetime with start time and end datetime with end time
-    st.write(df['Start Datetime'])
-    st.write(start_date)
-    st.write(start_time)
-    st.write(datetime.combine(start_date, start_time))
-    st.write(pd.to_datetime(start_date))
     combined_start_datetime = datetime.combine(start_date, start_time)
     combined_end_datetime = datetime.combine(end_date, end_time)
 
@@ -237,8 +232,8 @@ def main():
                                      value=df['End Datetime'].max().date())
 
         # Create time sliders for filtering by time in the sidebar
-        start_time = st.sidebar.slider("Start Time", value=pd.Timestamp("00:00").time(), format="HH:mm:ss")
-        end_time = st.sidebar.slider("End Time", value=pd.Timestamp("23:59:59").time(), format="HH:mm:ss")
+        start_time = st.sidebar.slider("Start Time", value=pd.Timestamp("06:00:00").time(), format="HH:mm:ss")
+        end_time = st.sidebar.slider("End Time", value=pd.Timestamp("06:00:00").time(), format="HH:mm:ss")
         duration_type = st.sidebar.selectbox("Select Duration units", ["Seconds", "Hours", "Days"], index=1)
 
         # Create bar chart with filter for Original Category
