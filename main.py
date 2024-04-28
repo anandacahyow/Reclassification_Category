@@ -100,6 +100,7 @@ def create_pareto(df, category_column, value_column,duration_type):
 
     # Sort categories based on the sum of duration
     df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
+    st.write(df.groupby(category_column)[value_column])
 
     # Calculate cumulative percentage
     df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
