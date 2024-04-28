@@ -204,16 +204,11 @@ def create_waterfall(df, category_column1, category_column2, value_column, durat
 
         reclassified_equipment = st.multiselect("Filter by Reclassified Equipment", df['Reclassified Equipment'].unique(), df['Reclassified Equipment'].unique())
         # Filter the DataFrame based on the selected Reclassified Equipment
-        filtered_df = df[df['Reclassified Equipment'].isin(reclassified_equipment)]
+        #filtered_df = df[df['Reclassified Equipment'].isin(reclassified_equipment)]
         
         # Create a pivot table
-        pivot_table = pd.pivot_table(filtered_df, 
-                                     values='Duration', 
-                                     index=['Reclassified Category', 'Original Category'], 
-                                     columns='Original Equipment', 
-                                     aggfunc='sum', 
-                                     fill_value=0)
-        st.write(pivot_table)
+        pivot_table = pd.pivot_table(filtered_df, values='Duration', index=['Reclassified Category', 'Original Category'], columns='Original Equipment', aggfunc='sum', fill_value=0)
+        #st.write(pivot_table)
     with col2:
         st.plotly_chart(fig)
         
