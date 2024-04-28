@@ -208,7 +208,9 @@ def main():
 
         # Create a multi-select dropdown for category filter in the sidebar
         available_categories = df['Original Category'].unique()
-        selected_categories = st.sidebar.multiselect("Select categories", available_categories, default=available_categories)
+        #selected_categories = st.sidebar.multiselect("Select categories", available_categories, default=available_categories)
+        selected_categories = [category for category in available_categories if st.sidebar.checkbox(category)]
+        selected_categories = st.sidebar.multiselect("Selected categories", available_categories, selected_categories)
 
         # Create a multi-select dropdown for equipment filter in the sidebar
         available_equipment = df['Reclassified Equipment'].unique()
