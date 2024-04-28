@@ -233,7 +233,7 @@ def main():
         # Create bar chart with filter for Reclassified Category
         create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
         
-        st.dataframe(df, height=50)
+        st.dataframe(df, height=150)
         
         filtered_df = df[(df['Original Category'].isin(selected_categories)) &
                          (df['Start Datetime'].dt.date >= start_date) &
