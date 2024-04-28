@@ -197,7 +197,7 @@ def create_waterfall(df, category_column1, category_column2, value_column, durat
         
 # Step 2: Create a Streamlit app
 def main():
-    st.title("📊 DMO Performance Reclassification Checking Tools")
+    st.title("📊 DMO-Performance Reclassification Validation Tools")
 
     # Upload file
     uploaded_file = st.file_uploader("Upload Excel file", type=["xlsx", "xls"])
