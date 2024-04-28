@@ -41,8 +41,8 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
 
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                     (df['Start Datetime'] <= combined_end_datetime) &
-                     (df['End Datetime'] >= combined_start_datetime) &
+                     (df['Start Datetime'] >= combined_start_datetime) &
+                     (df['End Datetime'] <= combined_end_datetime) &
                      ((df['Original Equipment'].isin(selected_equipment)) &
                       (df['Reclassified Equipment'].isin(selected_equipment)))]
 
@@ -262,8 +262,8 @@ def main():
         combined_end_datetime = datetime.combine(end_date, end_time)
         
         filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                         (df['Start Datetime'] <= combined_end_datetime) &
-                         (df['End Datetime'] >= combined_start_datetime) &
+                         (df['Start Datetime'] >= combined_start_datetime) &
+                         (df['End Datetime'] <= combined_end_datetime) &
                          ((df['Original Equipment'].isin(selected_equipment)) &
                          (df['Reclassified Equipment'].isin(selected_equipment)))]
 
