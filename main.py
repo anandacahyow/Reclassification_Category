@@ -162,7 +162,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
         x=categories,
         y=values,
         measure=["relative" if val != 0 else "total" for val in values],  # Different measure for each bar
-        base=0,  # Set the base to 100
+        base=-10,  # Set the base to 100
         increasing=dict(marker=dict(color="green")),  # Set color for increasing values
         decreasing=dict(marker=dict(color="red")),  # Set color for decreasing values
         connector=dict(line=dict(color="grey", width=2)),  # Customize connector line
