@@ -99,13 +99,22 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     st.plotly_chart(fig)
 
 
-def create_pareto(df, category_column, value_column,duration_type):
+def create_pareto(df, category_column, value_column, duration_type):
+    # Define the predefined categories
+    predefined_categories = ['Not Occupied', 'Planned Stoppages', 'Production Time', 'Unplanned Stoppages']
+
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
+    # Convert the 'Category' column to categorical with predefined categories
+    df_grouped[category_column] = pd.Categorical(df_grouped[category_column], categories=predefined_categories)
+
+    # Fill missing categories with zero values
+    df_grouped = df_grouped.groupby(category_column).sum().reset_index()
+    df_grouped = df_grouped.reindex(columns=[category_column, value_column]).fillna(0)
+
     # Sort categories based on the sum of duration
     df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
-    #st.write(df.groupby(category_column)[value_column].sum())
 
     # Calculate cumulative percentage
     df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
@@ -152,6 +161,7 @@ def create_pareto(df, category_column, value_column,duration_type):
         )
     )
     st.plotly_chart(fig)
+
 
 def create_waterfall(df, category_column1, category_column2, value_column, duration_type):
     # Group data by category and sum the duration
