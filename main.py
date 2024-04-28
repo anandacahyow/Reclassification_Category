@@ -246,14 +246,15 @@ def main():
         create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
         
         st.dataframe(df, height=150)
+                
+        combined_start_datetime = datetime.combine(start_date, start_time)
+        combined_end_datetime = datetime.combine(end_date, end_time)
         
         filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                         (df['Start Datetime'].dt.date >= start_date) &
-                         (df['End Datetime'].dt.date <= end_date) &
-                         (df['Start Datetime'].dt.time >= start_time) &
-                         (df['End Datetime'].dt.time <= end_time) &
+                         (df['Start Datetime'] >= combined_start_datetime) &
+                         (df['End Datetime'] <= combined_end_datetime) &
                          ((df['Original Equipment'].isin(selected_equipment)) &
-                          (df['Reclassified Equipment'].isin(selected_equipment)))]
+                         (df['Reclassified Equipment'].isin(selected_equipment)))]
 
         if duration_type == 'Seconds':
             time_factor = 1
