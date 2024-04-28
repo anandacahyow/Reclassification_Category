@@ -64,7 +64,9 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
             'Start Datetime': start_time,
             'End Datetime': end_time,
             'Duration': formatted_duration,
-            'PLC Code': row['PLC Code']
+            'PLC Code': row['PLC Code'],
+            'Reason': row['Reclassified Reason'],
+            'Reason': row['Original Reason'],
         })
 
     # Create a DataFrame from the list of data
