@@ -179,7 +179,7 @@ def create_waterfall(df, category_column1, category_column2, value_column, durat
     # Update layout
     fig.update_layout(
         title='📈 Gap Analysis with Waterfall Graph',
-        yaxis=dict(title=, duration_type),
+        yaxis=dict(title=duration_type),
         xaxis=dict(title='Category'),
         showlegend=True,
         height=600
