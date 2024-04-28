@@ -241,8 +241,8 @@ def main():
         #selected_equipment = st.sidebar.multiselect("Select equipment", available_equipment, default=available_equipment)
         st.sidebar.title("🛠 Choose Equipment(s):")
         all_machine_option = "All Machine"
-        available_equipment_with_all = [all_machine_option] + list(available_equipment)
-        selected_equipment = st.sidebar.multiselect("Choose Equipment(s):", available_equipment_with_all, default=[all_machine_option])
+        available_equipment_with_all = list(available_equipment)
+        selected_equipment = st.sidebar.multiselect("Choose Equipment(s):", available_equipment_with_all, default=available_equipment_with_all)
 
         st.sidebar.title("⏳ Time Window :")
         # Create date range picker for filtering by date in the sidebar
