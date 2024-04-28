@@ -7,7 +7,7 @@ import plotly.figure_factory as ff
 from datetime import datetime, date, time
 
 img = Image.open('Nestle_Logo.png')
-st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img,layout="wide")
+st.set_page_config(page_title="DMO-P Reclassification Validation Tool", page_icon=img,layout="wide")
 
 # Step 1: Read the Excel file and preprocess the data
 @st.cache
@@ -24,8 +24,7 @@ def format_duration(duration):
     seconds = duration.seconds % 60
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-def create_timeline(df, start_date, end_date, selected_categories, selected_equipment, y_axis):
-    st.write(f"create timeline: {start_date} || {end_date}")
+def create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, y_axis):
     # Create a list of colors corresponding to each category
     category_colors = {
         "Production Time": "green",
@@ -33,16 +32,29 @@ def create_timeline(df, start_date, end_date, selected_categories, selected_equi
         "Not Occupied": "grey",
         "Planned Stoppages": "yellow"
     }
-    filtered_df = df
+
+    # Combine start datetime with start time and end datetime with end time
+    combined_start_datetime = datetime.combine(start_date, start_time)
+    combined_end_datetime = datetime.combine(end_date, end_time)
+    #st.write(combined_start_datetime)
+    #st.write(combined_end_datetime)
+
+    # Filter data based on selected categories and date range
+    filtered_df = df[(df['Original Category'].isin(selected_categories)) &
+                     (df['Start Datetime'] >= combined_start_datetime) &
+                     (df['End Datetime'] <= combined_end_datetime) &
+                     ((df['Original Equipment'].isin(selected_equipment)) &
+                      (df['Reclassified Equipment'].isin(selected_equipment)))]
+
     # Create a list of data for plotting
-    dataa = []
+    data = []
     for index, row in filtered_df.iterrows():
         category = row['Original Category']
         start_time = row['Start Datetime']
         end_time = row['End Datetime']
         duration = end_time - start_time
         formatted_duration = format_duration(duration)
-        dataa.append({
+        data.append({
             'Original Equipment': row['Original Equipment'],
             'Reclassified Equipment': row['Reclassified Equipment'],
             'Category': category,
@@ -58,10 +70,7 @@ def create_timeline(df, start_date, end_date, selected_categories, selected_equi
         })
 
     # Create a DataFrame from the list of data
-    dataaa = pd.DataFrame(dataa)    
-    df_plot = df
-    st.write(dataaa)
-    st.write(df_plot)
+    df_plot = pd.DataFrame(data)
 
     if y_axis == "Original Equipment":
         colour = "Category"
@@ -243,13 +252,12 @@ def main():
         
         duration_type = st.sidebar.selectbox("Select Duration units", ["Seconds", "Hours", "Days"], index=1)
                         
-        combined_start_datetime = datetime.combine(start_date, start_time).time()
-        combined_end_datetime = datetime.combine(end_date, end_time).time()
-        st.write(f"{combined_start_datetime} || {combined_end_datetime}")
+        combined_start_datetime = datetime.combine(start_date, start_time)
+        combined_end_datetime = datetime.combine(end_date, end_time)
         
         filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                         (df['Start Datetime'].dt.time >= combined_start_datetime) &
-                         (df['End Datetime'].dt.time <= combined_end_datetime) &
+                         (df['Start Datetime'] >= combined_start_datetime) &
+                         (df['End Datetime'] <= combined_end_datetime) &
                          ((df['Original Equipment'].isin(selected_equipment)) &
                          (df['Reclassified Equipment'].isin(selected_equipment)))]
 
@@ -261,17 +269,14 @@ def main():
             time_factor = 1/(3600*24)
         filtered_df['Duration'] = time_factor*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
 
-        st.write("📅 DMO Event Listing")
-        st.dataframe(filtered_df, height=150)
-
         # Create bar chart with filter for Original Category
-        create_timeline(filtered_df, combined_start_datetime, combined_end_datetime, selected_categories, selected_equipment, "Original Equipment")
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
+
         # Create bar chart with filter for Reclassified Category
-        create_timeline(filtered_df, combined_start_datetime, combined_end_datetime, selected_categories, selected_equipment, "Reclassified Equipment")
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
         
         st.write("📅 DMO Event Listing")
         st.dataframe(filtered_df, height=150)
-        
         # Create Pareto diagram for Both Category
         col1, col2 = st.columns(2)
         with col1:
