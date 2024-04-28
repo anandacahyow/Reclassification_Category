@@ -236,7 +236,17 @@ def main():
         available_equipment = df['Reclassified Equipment'].unique()
         #selected_equipment = st.sidebar.multiselect("Select equipment", available_equipment, default=available_equipment)
         st.sidebar.title("🛠 Choose Equipment(s):")
-        selected_equipment = st.sidebar.multiselect("Select Equipment(s)", options=available_equipment, default=available_equipment,height=100)
+        selected_equipment = st.sidebar.multiselect("Select Equipment(s)", options=available_equipment, default=available_equipment,key="equipment_multiselect")
+
+        # Apply CSS styling to reduce the height of the multiselect dropdown
+        st.markdown(
+            """
+            <style>
+            .multiselect select {height: 30px !important;}
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
 
         st.sidebar.title("⏳ Time Window :")
         # Create date range picker for filtering by date in the sidebar
