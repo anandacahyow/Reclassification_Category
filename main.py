@@ -33,7 +33,9 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     }
 
     # Combine start datetime with start time and end datetime with end time
-    st.write(start_time)
+    st.write(df['Start Datetime'])
+    st.write(start_date)
+    st.write(pd.to_datetime(start_date))
     st.write(pd.to_timedelta(start_time))
     combined_start_datetime = pd.to_datetime(start_date) + pd.to_timedelta(start_time)
     combined_end_datetime = pd.to_datetime(end_date) + pd.to_timedelta(end_time)
