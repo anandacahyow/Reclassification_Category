@@ -248,8 +248,8 @@ def main():
         st.write(f"{combined_start_datetime} || {combined_end_datetime}")
         
         filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                         (df['Start Datetime'] >= combined_start_datetime) &
-                         (df['End Datetime'] <= combined_end_datetime) &
+                         (df['Start Datetime'].dt.time >= combined_start_datetime) &
+                         (df['End Datetime'].dt.time <= combined_end_datetime) &
                          ((df['Original Equipment'].isin(selected_equipment)) &
                          (df['Reclassified Equipment'].isin(selected_equipment)))]
 
