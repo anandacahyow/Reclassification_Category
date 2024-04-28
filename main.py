@@ -150,13 +150,13 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     merged_df['Duration_Difference'] = merged_df['Duration_y'] - merged_df['Duration_x']
     merged_df.columns = ['Category', 'Original', 'Reclassified', 'Gap']
 
-    #categories = list(['Total Time']) + merged_df['Category'].tolist()
-    #values = list([sum(merged_df['Gap'].tolist())]) + merged_df['Gap'].tolist()
+    categories = list(['Ref']) + merged_df['Category'].tolist()
+    values = list([sum(merged_df['Gap'].tolist())]) + merged_df['Gap'].tolist()
 
     fig = go.Figure(go.Waterfall(
         x=categories,
         y=values,
-        measure=["total" if i == 0 else "relative" for i in range(len(values))],  # Different measure for each bar
+        measure=["relative" if val != 0 else "total" for val in values],  # Different measure for each bar
         base=0,  # Set the base to 100
         increasing=dict(marker=dict(color="green")),  # Set color for increasing values
         decreasing=dict(marker=dict(color="red")),  # Set color for decreasing values
