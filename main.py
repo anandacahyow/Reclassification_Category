@@ -7,7 +7,7 @@ import plotly.figure_factory as ff
 from datetime import datetime, date, time
 
 img = Image.open('Nestle_Logo.png')
-st.set_page_config(page_title="DMO-P Reclassification Validation Tool", page_icon=img,layout="wide")
+st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img,layout="wide")
 
 # Step 1: Read the Excel file and preprocess the data
 @st.cache
@@ -236,17 +236,7 @@ def main():
         available_equipment = df['Reclassified Equipment'].unique()
         #selected_equipment = st.sidebar.multiselect("Select equipment", available_equipment, default=available_equipment)
         st.sidebar.title("🛠 Choose Equipment(s):")
-        selected_equipment = st.sidebar.multiselect("Select Equipment(s)", options=available_equipment, default=available_equipment,key="equipment_multiselect")
-
-        # Apply CSS styling to reduce the height of the multiselect dropdown
-        st.markdown(
-            """
-            <style>
-            .multiselect select {height: 30px !important;}
-            </style>
-            """,
-            unsafe_allow_html=True,
-        )
+        selected_equipment = [category for category in available_equipment if st.sidebar.checkbox(category, value=True)]
 
         st.sidebar.title("⏳ Time Window :")
         # Create date range picker for filtering by date in the sidebar
