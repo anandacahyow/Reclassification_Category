@@ -227,13 +227,13 @@ def main():
         start_date = st.sidebar.date_input("Start Date", min_value=df['Start Datetime'].min().date(),
                                        max_value=df['End Datetime'].max().date(),
                                        value=df['Start Datetime'].min().date())
+        start_time = st.sidebar.slider("Start Time", value=pd.Timestamp("06:00:00").time(), format="HH:mm:ss")
+        
         end_date = st.sidebar.date_input("End Date", min_value=df['Start Datetime'].min().date(),
                                      max_value=df['End Datetime'].max().date(),
                                      value=df['End Datetime'].max().date())
-
-        # Create time sliders for filtering by time in the sidebar
-        start_time = st.sidebar.slider("Start Time", value=pd.Timestamp("06:00:00").time(), format="HH:mm:ss")
         end_time = st.sidebar.slider("End Time", value=pd.Timestamp("06:00:00").time(), format="HH:mm:ss")
+        
         duration_type = st.sidebar.selectbox("Select Duration units", ["Seconds", "Hours", "Days"], index=1)
 
         # Create bar chart with filter for Original Category
