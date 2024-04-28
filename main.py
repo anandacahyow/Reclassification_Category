@@ -243,8 +243,8 @@ def main():
         
         duration_type = st.sidebar.selectbox("Select Duration units", ["Seconds", "Hours", "Days"], index=1)
                         
-        combined_start_datetime = datetime.combine(start_date, start_time)
-        combined_end_datetime = datetime.combine(end_date, end_time)
+        combined_start_datetime = datetime.combine(start_date, start_time).time()
+        combined_end_datetime = datetime.combine(end_date, end_time).time()
         st.write(f"{combined_start_datetime} || {combined_end_datetime}")
         
         filtered_df = df[(df['Original Category'].isin(selected_categories)) &
