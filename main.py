@@ -151,7 +151,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     merged_df.columns = ['Category', 'Original', 'Reclassified', 'Gap']
 
     categories = list(['Ref']) + merged_df['Category'].tolist()
-    values = list([sum(merged_df['Gap'].tolist())]) + merged_df['Gap'].tolist()
+    values = list([sum(merged_df['Reclassified'].tolist())]) + merged_df['Gap'].tolist()
 
     fig = go.Figure(go.Waterfall(
         x=categories,
