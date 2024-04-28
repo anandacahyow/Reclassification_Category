@@ -270,13 +270,14 @@ def main():
         filtered_df['Duration'] = time_factor*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
 
         # Create bar chart with filter for Original Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
+        create_timeline(filtered_df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
 
         # Create bar chart with filter for Reclassified Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
+        create_timeline(filtered_df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
         
         st.write("📅 DMO Event Listing")
         st.dataframe(filtered_df, height=150)
+        
         # Create Pareto diagram for Both Category
         col1, col2 = st.columns(2)
         with col1:
