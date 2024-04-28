@@ -34,15 +34,15 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     }
 
     # Combine start datetime with start time and end datetime with end time
-    combined_start_datetime = datetime.combine(start_date, start_time).time()
-    combined_end_datetime = datetime.combine(end_date, end_time).time()
+    combined_start_datetime = datetime.combine(start_date, start_time)
+    combined_end_datetime = datetime.combine(end_date, end_time)
     #st.write(combined_start_datetime)
     #st.write(combined_end_datetime)
 
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                     (df['Start Datetime'].dt.time >= combined_start_datetime) &
-                     (df['End Datetime'].dt.time <= combined_end_datetime) &
+                     (df['Start Datetime'] >= combined_start_datetime) &
+                     (df['End Datetime'] <= combined_end_datetime) &
                      ((df['Original Equipment'].isin(selected_equipment)) &
                       (df['Reclassified Equipment'].isin(selected_equipment)))]
 
@@ -252,12 +252,12 @@ def main():
         
         duration_type = st.sidebar.selectbox("Select Duration units", ["Seconds", "Hours", "Days"], index=1)
                         
-        combined_start_datetime = datetime.combine(start_date, start_time).time()
-        combined_end_datetime = datetime.combine(end_date, end_time).time()
+        combined_start_datetime = datetime.combine(start_date, start_time)
+        combined_end_datetime = datetime.combine(end_date, end_time)
         
         filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                         (df['Start Datetime'].dt.time >= combined_start_datetime) &
-                         (df['End Datetime'].dt.time <= combined_end_datetime) &
+                         (df['Start Datetime'] >= combined_start_datetime) &
+                         (df['End Datetime'] <= combined_end_datetime) &
                          ((df['Original Equipment'].isin(selected_equipment)) &
                          (df['Reclassified Equipment'].isin(selected_equipment)))]
 
