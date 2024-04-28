@@ -89,6 +89,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                       height=400)
     st.plotly_chart(fig)
 
+
 def create_pareto(df, category_column, value_column,duration_type):
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
