@@ -236,7 +236,7 @@ def main():
         available_equipment = df['Reclassified Equipment'].unique()
         #selected_equipment = st.sidebar.multiselect("Select equipment", available_equipment, default=available_equipment)
         st.sidebar.title("🛠 Choose Equipment(s):")
-        selected_equipment = [category for category in available_equipment if st.sidebar.selectbox(category, index=0, format_func=lambda x: x, help="Hold down Ctrl (Cmd) to select multiple options")]
+        selected_equipment = [category for category in available_equipment if st.sidebar.selectbox(category, index=0)]
 
         st.sidebar.title("⏳ Time Window :")
         # Create date range picker for filtering by date in the sidebar
