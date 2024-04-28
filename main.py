@@ -214,9 +214,10 @@ def main():
         # Create a multi-select dropdown for equipment filter in the sidebar
         available_equipment = df['Reclassified Equipment'].unique()
         #selected_equipment = st.sidebar.multiselect("Select equipment", available_equipment, default=available_equipment)
-        st.sidebar.write("🛠 Choose Equipment(s):")
+        st.sidebar.title("🛠 Choose Equipment(s):")
         selected_equipment = [category for category in available_equipment if st.sidebar.checkbox(category, value=True)]
 
+        st.sidebar.title("⏳ Time Window :")
         # Create date range picker for filtering by date in the sidebar
         start_date = st.sidebar.date_input("Start Date", min_value=df['Start Datetime'].min().date(),
                                        max_value=df['End Datetime'].max().date(),
