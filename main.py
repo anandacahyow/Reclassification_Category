@@ -261,6 +261,9 @@ def main():
             time_factor = 1/(3600*24)
         filtered_df['Duration'] = time_factor*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
 
+        st.write("📅 DMO Event Listing")
+        st.dataframe(filtered_df, height=150)
+
         # Create bar chart with filter for Original Category
         create_timeline(filtered_df, combined_start_datetime, combined_end_datetime, selected_categories, selected_equipment, "Original Equipment")
         # Create bar chart with filter for Reclassified Category
