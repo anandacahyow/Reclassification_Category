@@ -155,14 +155,20 @@ def create_pareto(df, category_column, value_column,duration_type):
 
 def create_waterfall(df, category_column1, category_column2, value_column, duration_type):
     # Group data by category and sum the duration
-    df_grouped1 = df.groupby(category_column1)[value_column].sum().reset_index()
-    # Sort categories based on the sum of duration
-    df_sorted1 = df_grouped1.sort_values(by=value_column, ascending=False)
+    pivot_df = df.pivot_table(index=category_column1, values=value_column, aggfunc='sum')
+    # Define the predefined categories
+    predefined_categories = ['Not Occupied', 'Planned Stoppages', 'Production Time', 'Unplanned Stoppages']
+    pivot_df = pivot_df.reindex(predefined_categories, fill_value=0)
+    df_sorted1 = pivot_df.reset_index()
 
     # Group data by category and sum the duration
-    df_grouped2 = df.groupby(category_column2)[value_column].sum().reset_index()
-    # Sort categories based on the sum of duration
-    df_sorted2 = df_grouped2.sort_values(by=value_column, ascending=False)
+    pivot_df2 = df.pivot_table(index=category_column2, values=value_column, aggfunc='sum')
+    # Define the predefined categories
+    predefined_categories = ['Not Occupied', 'Planned Stoppages', 'Production Time', 'Unplanned Stoppages']
+    pivot_df2 = pivot_df2.reindex(predefined_categories, fill_value=0)
+    df_sorted2 = pivot_df2.reset_index()
+    st.write(df_sorted1)
+    st.write(df_sorted2)
 
     merged_df = pd.merge(df_sorted1, df_sorted2, left_on=category_column1, right_on=category_column2)
     merged_df.drop(columns=[category_column2], inplace=True)
