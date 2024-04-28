@@ -182,9 +182,10 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     col1, col2 = st.columns(2)
     with col1:
         st.write("▶ Total Duration (s) of Original Vs Reclassification per Performance Category")
-        merged_df.loc['Total'] = merged_df.sum(axis=0)
-        merged_df.loc[df.index[-1], 'Category'] = 'Total'
-        st.write(merged_df)
+        total_sum = merged_df.sum()
+        total_row = pd.DataFrame({'Category': ['Total'], 'Original': [total_sum['Original']], 'Reclassified': [total_sum['Reclassified']], 'Gap': [total_sum['Gap']]})
+        final_df = df.append(total_row, ignore_index=True)
+        st.write(final_df)
     with col2:
         st.plotly_chart(fig)
         
