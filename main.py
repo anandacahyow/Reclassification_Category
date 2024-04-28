@@ -183,7 +183,6 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     with col1:
         st.write("▶ Total Duration (s) of Original Vs Reclassification per Performance Category")
         merged_df.loc['Total'] = merged_df.sum(axis=0)
-        merged_df.reset_index(drop=True, inplace=True)
         merged_df.loc[df.index[-1], 'Category'] = 'Total'
         st.write(merged_df)
     with col2:
