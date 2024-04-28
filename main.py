@@ -86,7 +86,8 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                                   "Start Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "End Datetime": "|%Y-%m-%d %H:%M:%S",
                                   "Duration": True,
-                                  "PLC Code": True})
+                                  "PLC Code": True,
+                                  "Reason": True})
     fig.update_yaxes(categoryorder="category ascending")
     fig.update_layout(title=f"🕔 Duration of {y_axis}",
                       xaxis_title="Datetime",
