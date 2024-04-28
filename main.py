@@ -7,7 +7,7 @@ import plotly.figure_factory as ff
 from datetime import datetime, date, time
 
 img = Image.open('Nestle_Logo.png')
-st.set_page_config(page_title="DMO-P Reclassification Validation Tool", page_icon=img,layout="wide")
+st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img,layout="wide")
 
 # Step 1: Read the Excel file and preprocess the data
 @st.cache
@@ -236,7 +236,7 @@ def main():
         available_equipment = df['Reclassified Equipment'].unique()
         #selected_equipment = st.sidebar.multiselect("Select equipment", available_equipment, default=available_equipment)
         st.sidebar.title("🛠 Choose Equipment(s):")
-        selected_equipment = st.sidebar.multiselect("Select Equipment(s)", options=available_equipment, default=available_equipment)
+        selected_equipment = [category for category in available_equipment if st.sidebar.checkbox(category, value=True)]
 
         st.sidebar.title("⏳ Time Window :")
         # Create date range picker for filtering by date in the sidebar
@@ -251,6 +251,12 @@ def main():
         end_time = st.sidebar.slider("End Time", value=pd.Timestamp("06:00:00").time(), format="HH:mm:ss")
         
         duration_type = st.sidebar.selectbox("Select Duration units", ["Seconds", "Hours", "Days"], index=1)
+
+        # Create bar chart with filter for Original Category
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
+
+        # Create bar chart with filter for Reclassified Category
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
                         
         combined_start_datetime = datetime.combine(start_date, start_time)
         combined_end_datetime = datetime.combine(end_date, end_time)
@@ -269,12 +275,6 @@ def main():
             time_factor = 1/(3600*24)
         filtered_df['Duration'] = time_factor*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
 
-        # Create bar chart with filter for Original Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
-
-        # Create bar chart with filter for Reclassified Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
-        
         st.write("📅 DMO Event Listing")
         st.dataframe(filtered_df, height=150)
         # Create Pareto diagram for Both Category
