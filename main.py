@@ -32,18 +32,14 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
         "Planned Stoppages": "yellow"
     }
 
-    # Convert start and end times to timedelta objects
-    start_timedelta = pd.to_timedelta(start_time)
-    end_timedelta = pd.to_timedelta(end_time)
-
-    # Combine start date with start time and end date with end time
-    start_datetime = pd.to_datetime(start_date) + start_timedelta
-    end_datetime = pd.to_datetime(end_date) + end_timedelta
+    # Combine start datetime with start time and end datetime with end time
+    combined_start_datetime = pd.to_datetime(start_date) + pd.to_timedelta(start_time)
+    combined_end_datetime = pd.to_datetime(end_date) + pd.to_timedelta(end_time)
 
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                     (df['Start Datetime'] >= start_datetime) &
-                     (df['End Datetime'] <= end_datetime) &
+                     (df['Start Datetime'] >= combined_start_datetime) &
+                     (df['End Datetime'] <= combined_end_datetime) &
                      ((df['Original Equipment'].isin(selected_equipment)) &
                       (df['Reclassified Equipment'].isin(selected_equipment)))]
 
@@ -77,6 +73,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     else:
         colour = 'Reclassified Category'
         sub_cat = 'Reclassified Sub Category'
+    
     # Plot the graph using Plotly Express
     fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y=y_axis,
                       color=colour, color_discrete_map=category_colors,
