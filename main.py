@@ -99,19 +99,26 @@ def create_pareto(df, category_column, value_column):
 
     # Plot Pareto diagram
     fig = go.Figure()
-    # Add bars for frequencies
+
+    # Add bars for frequencies with text outside the bars
     fig.add_trace(go.Bar(
         x=df_sorted[category_column],
         y=df_sorted[value_column],
-        name='Hours'
+        name='Hours',
+        text=df_sorted[value_column].round(2),  # Round the values to two decimal places
+        textposition='outside'  # Display text outside the bars
     ))
+    
+    # Add the cumulative percentage line
     fig.add_trace(go.Scatter(
         x=df_sorted[category_column],
         y=df_sorted['cumulative_percentage'],
         name='Cumulative Percentage',
         line=dict(color="orange"),
-        yaxis='y2'  # secondary y-axis
+        yaxis='y2'  # Secondary y-axis
     ))
+    
+    # Update the layout
     fig.update_layout(
         title=f"✅ {category_column} Pareto Diagram",
         yaxis=dict(
