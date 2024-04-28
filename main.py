@@ -122,7 +122,7 @@ def create_pareto(df, category_column, value_column,duration_type):
     fig.update_layout(
         title=f"✅ {category_column} Pareto Diagram",
         yaxis=dict(
-            title=, duration_type
+            title=duration_type
         ),
         yaxis2=dict(
             title='Cumulative Percentage (%)',
