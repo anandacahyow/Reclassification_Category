@@ -153,6 +153,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     #categories = list(['Ref']) + merged_df['Category'].tolist()
     #values = list([sum(merged_df['Reclassified'].tolist())]) + merged_df['Gap'].tolist()
 
+    merged_df = merged_df.sort_values(by='Gap')
     categories = merged_df['Category'].tolist()
     values = merged_df['Gap'].tolist()
     
@@ -164,7 +165,8 @@ def create_waterfall(df, category_column1, category_column2, value_column):
         increasing=dict(marker=dict(color="green")),  # Set color for increasing values
         decreasing=dict(marker=dict(color="red")),  # Set color for decreasing values
         connector=dict(line=dict(color="grey", width=2)),  # Customize connector line
-        text=[0] + [values[i] - values[i - 1] for i in range(1, len(values))],  # Custom text for each bar
+        text=values,  # Custom text for each bar
+        #text=[0] + [values[i] - values[i - 1] for i in range(1, len(values))],  # Custom text for each bar
         textposition="outside",  # Set text position outside the bars
         hoverinfo="y+text",  # Display y value and custom text on hover
     ))
