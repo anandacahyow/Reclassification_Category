@@ -46,7 +46,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                      ((df['Original Equipment'].isin(selected_equipment)) &
                       (df['Reclassified Equipment'].isin(selected_equipment)))]
     st.write(filtered_df['Start Datetime'][0])
-    st.write(filtered_df['End Datetime'][-1])
+    st.write(filtered_df['End Datetime'])
 
     # Create a list of data for plotting
     data = []
