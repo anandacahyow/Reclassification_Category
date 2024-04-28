@@ -58,8 +58,8 @@ def create_timeline(df, start_date, end_date, selected_categories, selected_equi
         })
 
     # Create a DataFrame from the list of data
-    data = df
-    df_plot = pd.DataFrame(data)
+    #df_plot = pd.DataFrame(data)
+    df_plot = df
 
     if y_axis == "Original Equipment":
         colour = "Category"
