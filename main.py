@@ -100,7 +100,7 @@ def create_pareto(df, category_column, value_column,duration_type):
 
     # Sort categories based on the sum of duration
     df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
-    st.write(df.groupby(category_column)[value_column].sum())
+    #st.write(df.groupby(category_column)[value_column].sum())
 
     # Calculate cumulative percentage
     df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
@@ -244,9 +244,7 @@ def main():
 
         # Create bar chart with filter for Reclassified Category
         create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
-        
-        st.dataframe(df, height=150)
-                
+                        
         combined_start_datetime = datetime.combine(start_date, start_time)
         combined_end_datetime = datetime.combine(end_date, end_time)
         
@@ -263,7 +261,9 @@ def main():
         elif duration_type == 'Days':
             time_factor = 1/(3600*24)
         filtered_df['Duration'] = time_factor*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
-        
+
+        st.write("📅 DMO Event Listing")
+        st.dataframe(filtered_df, height=150)
         # Create Pareto diagram for Both Category
         col1, col2 = st.columns(2)
         with col1:
