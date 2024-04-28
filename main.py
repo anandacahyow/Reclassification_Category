@@ -185,6 +185,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
         total_sum = merged_df.sum()
         total_row = pd.DataFrame({'Category': ['Total'], 'Original': [total_sum['Original']], 'Reclassified': [total_sum['Reclassified']], 'Gap': [total_sum['Gap']]})
         #merged_df = merged_df.append(total_row, ignore_index=True)
+        st.write(total_row)
         st.write(merged_df)
     with col2:
         st.plotly_chart(fig)
