@@ -167,8 +167,6 @@ def create_waterfall(df, category_column1, category_column2, value_column, durat
     predefined_categories = ['Not Occupied', 'Planned Stoppages', 'Production Time', 'Unplanned Stoppages']
     pivot_df2 = pivot_df2.reindex(predefined_categories, fill_value=0)
     df_sorted2 = pivot_df2.reset_index()
-    st.write(df_sorted1)
-    st.write(df_sorted2)
 
     merged_df = pd.merge(df_sorted1, df_sorted2, left_on=category_column1, right_on=category_column2)
     merged_df.drop(columns=[category_column2], inplace=True)
