@@ -32,12 +32,14 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
         "Planned Stoppages": "yellow"
     }
 
+    # Combine start date with start time and end date with end time
+    start_datetime = pd.to_datetime(start_date) + pd.to_timedelta(start_time)
+    end_datetime = pd.to_datetime(end_date) + pd.to_timedelta(end_time)
+
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
-                     (df['Start Datetime'].dt.date >= start_date) &
-                     (df['End Datetime'].dt.date <= end_date) &
-                     (df['Start Datetime'].dt.time >= start_time) &
-                     (df['End Datetime'].dt.time <= end_time) &
+                     (df['Start Datetime'] >= start_datetime) &
+                     (df['End Datetime'] <= end_datetime) &
                      ((df['Original Equipment'].isin(selected_equipment)) &
                       (df['Reclassified Equipment'].isin(selected_equipment)))]
 
@@ -83,8 +85,8 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     fig.update_layout(title=f"🕔 Duration of {y_axis}",
                       xaxis_title="Datetime",
                       yaxis_title=y_axis,
-                      width = 1200,
-                      height = 400)
+                      width=1200,
+                      height=400)
     st.plotly_chart(fig)
 
 def create_pareto(df, category_column, value_column,duration_type):
