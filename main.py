@@ -153,7 +153,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     #categories = list(['Ref']) + merged_df['Category'].tolist()
     #values = list([sum(merged_df['Reclassified'].tolist())]) + merged_df['Gap'].tolist()
 
-    merged_df = merged_df.sort_values(by='Gap')
+    merged_df = merged_df.sort_values(by='Gap',ascending=False)
     categories = merged_df['Category'].tolist()
     values = merged_df['Gap'].tolist()
     
@@ -176,6 +176,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
         yaxis=dict(title='Value'),
         xaxis=dict(title='Category'),
         showlegend=True,
+        height=500
     )
     col1, col2 = st.columns(2)
     with col1:
