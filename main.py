@@ -40,8 +40,8 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     st.write(datetime.combine(start_date, start_time))
     st.write(pd.to_datetime(start_date))
     st.write(pd.to_timedelta(start_time))
-    combined_start_datetime = pd.to_datetime(start_date) + pd.to_timedelta(start_time)
-    combined_end_datetime = pd.to_datetime(end_date) + pd.to_timedelta(end_time)
+    combined_start_datetime = datetime.combine(start_date, start_time)
+    combined_end_datetime = datetime.combine(end_date, end_time)
 
     # Filter data based on selected categories and date range
     filtered_df = df[(df['Original Category'].isin(selected_categories)) &
