@@ -87,7 +87,7 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
                       height = 400)
     st.plotly_chart(fig)
 
-def create_pareto(df, category_column, value_column):
+def create_pareto(df, category_column, value_column,duration_type):
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
@@ -122,7 +122,7 @@ def create_pareto(df, category_column, value_column):
     fig.update_layout(
         title=f"✅ {category_column} Pareto Diagram",
         yaxis=dict(
-            title='Hours'
+            title=, duration_type
         ),
         yaxis2=dict(
             title='Cumulative Percentage (%)',
@@ -139,7 +139,7 @@ def create_pareto(df, category_column, value_column):
     )
     st.plotly_chart(fig)
 
-def create_waterfall(df, category_column1, category_column2, value_column):
+def create_waterfall(df, category_column1, category_column2, value_column, duration_type):
     # Group data by category and sum the duration
     df_grouped1 = df.groupby(category_column1)[value_column].sum().reset_index()
     # Sort categories based on the sum of duration
@@ -179,7 +179,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     # Update layout
     fig.update_layout(
         title='📈 Gap Analysis with Waterfall Graph',
-        yaxis=dict(title='Hours'),
+        yaxis=dict(title=, duration_type),
         xaxis=dict(title='Category'),
         showlegend=True,
         height=600
@@ -253,12 +253,12 @@ def main():
         # Create Pareto diagram for Both Category
         col1, col2 = st.columns(2)
         with col1:
-            create_pareto(filtered_df, "Original Category", "Duration")
+            create_pareto(filtered_df, "Original Category", "Duration", duration_type)
 
         with col2:
-            create_pareto(filtered_df, "Reclassified Category", "Duration")
+            create_pareto(filtered_df, "Reclassified Category", "Duration", duration_type)
         
-        create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration")
+        create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration", duration_type)
         
         st.sidebar.image("Nestle_Signature.png")
         st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory identifying DMO Performance Category reclassification and track complaiance based on <b>St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations
