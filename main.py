@@ -251,12 +251,6 @@ def main():
         end_time = st.sidebar.slider("End Time", value=pd.Timestamp("06:00:00").time(), format="HH:mm:ss")
         
         duration_type = st.sidebar.selectbox("Select Duration units", ["Seconds", "Hours", "Days"], index=1)
-
-        # Create bar chart with filter for Original Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
-
-        # Create bar chart with filter for Reclassified Category
-        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
                         
         combined_start_datetime = datetime.combine(start_date, start_time)
         combined_end_datetime = datetime.combine(end_date, end_time)
@@ -275,6 +269,12 @@ def main():
             time_factor = 1/(3600*24)
         filtered_df['Duration'] = time_factor*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
 
+        # Create bar chart with filter for Original Category
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
+
+        # Create bar chart with filter for Reclassified Category
+        create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment")
+        
         st.write("📅 DMO Event Listing")
         st.dataframe(filtered_df, height=150)
         # Create Pareto diagram for Both Category
