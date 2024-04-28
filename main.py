@@ -129,6 +129,7 @@ def create_pareto(df, category_column, value_column,duration_type):
     # Update the layout
     fig.update_layout(
         title=f"✅ {category_column} Pareto Diagram",
+        height=400,
         yaxis=dict(
             title=duration_type
         ),
