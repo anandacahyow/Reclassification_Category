@@ -35,14 +35,14 @@ def create_timeline(df, start_date, end_date, selected_categories, selected_equi
     }
     filtered_df = df
     # Create a list of data for plotting
-    data = []
+    dataa = []
     for index, row in filtered_df.iterrows():
         category = row['Original Category']
         start_time = row['Start Datetime']
         end_time = row['End Datetime']
         duration = end_time - start_time
         formatted_duration = format_duration(duration)
-        data.append({
+        dataa.append({
             'Original Equipment': row['Original Equipment'],
             'Reclassified Equipment': row['Reclassified Equipment'],
             'Category': category,
@@ -58,6 +58,7 @@ def create_timeline(df, start_date, end_date, selected_categories, selected_equi
         })
 
     # Create a DataFrame from the list of data
+    data = df
     df_plot = pd.DataFrame(data)
 
     if y_axis == "Original Equipment":
