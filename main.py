@@ -58,7 +58,7 @@ def create_timeline(df, start_date, end_date, selected_categories, selected_equi
         })
 
     # Create a DataFrame from the list of data
-    dataa = pd.DataFrame(data)    
+    dataaa = pd.DataFrame(dataa)    
     df_plot = df
     st.write(dataaa)
     st.write(df_plot)
