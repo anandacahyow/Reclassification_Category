@@ -65,8 +65,8 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
             'End Datetime': end_time,
             'Duration': formatted_duration,
             'PLC Code': row['PLC Code'],
-            'Reason': row['Reclassified Reason'],
-            'Reason': row['Original Reason'],
+            'Reclassified Reason': row['Reclassified Reason'],
+            'Original Reason': row['Original Reason'],
         })
 
     # Create a DataFrame from the list of data
@@ -75,9 +75,11 @@ def create_timeline(df, start_date, end_date, start_time, end_time, selected_cat
     if y_axis == "Original Equipment":
         colour = "Category"
         sub_cat = "Original Sub Category"
+        reason = "Original Reason"
     else:
         colour = 'Reclassified Category'
         sub_cat = 'Reclassified Sub Category'
+        reason = 'Reclassified Reason'
     
     # Plot the graph using Plotly Express
     fig = px.timeline(df_plot, x_start="Start Datetime", x_end="End Datetime", y=y_axis,
