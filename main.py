@@ -181,7 +181,7 @@ def create_waterfall(df, category_column1, category_column2, value_column):
     )
     col1, col2 = st.columns(2)
     with col1:
-        st.write("▶ Total Duration (s) of Original Vs Reclassification per Performance Category")
+        st.write("▶ Total Duration (hrs) of Original Vs Reclassification per Performance Category")
         total_sum = merged_df.sum()
         total_row = pd.DataFrame({'Category': ['Total'], 'Original': [total_sum['Original']], 'Reclassified': [total_sum['Reclassified']], 'Gap': [total_sum['Gap']]})
         merged_df = pd.concat([merged_df, total_row])
@@ -220,6 +220,7 @@ def main():
         # Create time sliders for filtering by time in the sidebar
         start_time = st.sidebar.slider("Start Time", value=pd.Timestamp("00:00").time(), format="HH:mm:ss")
         end_time = st.sidebar.slider("End Time", value=pd.Timestamp("23:59:59").time(), format="HH:mm:ss")
+        duration_type = st.sidebar.selectbox("Select Duration units", ["Seconds", "Hours", "Days"], index=1)
 
         # Create bar chart with filter for Original Category
         create_timeline(df, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment")
@@ -235,7 +236,14 @@ def main():
                          (df['End Datetime'].dt.time <= end_time) &
                          ((df['Original Equipment'].isin(selected_equipment)) &
                           (df['Reclassified Equipment'].isin(selected_equipment)))]
-        filtered_df['Duration'] = (1/3600)*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
+
+        if duration_type == 'Seconds':
+            time_factor = 1
+        elif duration_type == 'Hours':
+            time_factor = (1/3600)
+        elif duration_type == 'Days':
+            time_factor = 1/(3600*24)
+        filtered_df['Duration'] = time_factor*(filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
         
         # Create Pareto diagram for Both Category
         col1, col2 = st.columns(2)
