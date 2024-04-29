@@ -208,7 +208,7 @@ def create_waterfall(df, category_column1, category_column2, value_column, durat
         yaxis=dict(title=duration_type),
         xaxis=dict(title='Category'),
         showlegend=True,
-        height=600
+        height=450
     )
     col1, col2 = st.columns(2)
     with col1:
