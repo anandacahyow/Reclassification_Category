@@ -135,7 +135,7 @@ def create_pareto(df, category_column, value_column, duration_type):
         x=df_sorted[category_column],
         y=df_sorted['cumulative_percentage'],
         name='Cumulative Percentage',
-        line=dict(color="orange"),
+        line=dict(color="navy"),
         yaxis='y2'  # Secondary y-axis
     ))
 
