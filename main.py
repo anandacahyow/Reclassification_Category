@@ -102,10 +102,10 @@ def create_timeline(df, default_cat, start_date, end_date, start_time, end_time,
 def create_pareto(df, category_column, value_column, duration_type):
     # Define category colors
     category_colors = {
-        "Production Time": "#91C483",
-        "Unplanned Stoppages": "#FF6464",
-        "Not Occupied": "#EEEEEE",
-        "Planned Stoppages": "#FFE162"
+        "Production Time": "green",
+        "Unplanned Stoppages": "red",
+        "Not Occupied": "grey",
+        "Planned Stoppages": "yellow"
     }
     
     # Group data by category and sum the duration
@@ -194,8 +194,8 @@ def create_waterfall(df, category_column1, category_column2, value_column, durat
         y=values,
         measure=["relative" if val != 1 else "total" for val in values],  # Different measure for each bar
         base=-10,  # Set the base to 100
-        increasing=dict(marker=dict(color="blue")),  # Set color for increasing values
-        decreasing=dict(marker=dict(color="orange")),  # Set color for decreasing values
+        increasing=dict(marker=dict(color="91C483")),  # Set color for increasing values
+        decreasing=dict(marker=dict(color="FF6464")),  # Set color for decreasing values
         connector=dict(line=dict(color="grey", width=2)),  # Customize connector line
         text=values,  # Custom text for each bar
         #text=[0] + [values[i] - values[i - 1] for i in range(1, len(values))],  # Custom text for each bar
