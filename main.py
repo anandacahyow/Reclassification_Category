@@ -303,7 +303,6 @@ def main():
         create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration", duration_type)
         
     st.sidebar.image("Nestle_Signature.png")
-    url = "https://github.com/ai-coordinator/Video-transmission"
     st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory in identifying DMO Performance Category reclassification and track compliance based on <b><a href="https://nestle.sharepoint.com/:b:/t/NMTTechnical2023/EZ2DQYyVfblDhGV11hbULU0BAPm34HHC5ZHCUERmFu3tnQ?e=IdQUp4" style="color:blue;">St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations</a></b></p>""", unsafe_allow_html=True)
     st.sidebar.write("""<p style='font-size: 13px;'>For any inquiries, error handling, or assistance, please feel free to reach us through Email: <br>
 <a href="mailto:Ananda.Cahyo@id.nestle.com">Ananda.Cahyo@id.nestle.com <br></p>""", unsafe_allow_html=True)
