@@ -243,6 +243,8 @@ def main():
         all_machine_option = "All Machine"
         available_equipment_with_all = list(available_equipment)
         selected_equipment = st.sidebar.multiselect("Choose Equipment(s):", available_equipment_with_all, default=available_equipment_with_all)
+        if not selected_equipment:
+            st.sidebar.warning("Please Fill in Minimal 1 Equipment")
 
         st.sidebar.title("⏳ Time Window :")
         # Create date range picker for filtering by date in the sidebar
