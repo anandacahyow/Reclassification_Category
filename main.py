@@ -7,7 +7,7 @@ import plotly.figure_factory as ff
 from datetime import datetime, date, time
 
 img = Image.open('Nestle_Logo.png')
-st.set_page_config(page_title="DMO-P Reclassification Checking Tool", page_icon=img,layout="wide")
+st.set_page_config(page_title="DMO-P Validation Tool", page_icon=img,layout="wide")
 
 # Step 1: Read the Excel file and preprocess the data
 @st.cache
