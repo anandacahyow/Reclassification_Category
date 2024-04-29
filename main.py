@@ -99,13 +99,20 @@ def create_timeline(df, default_cat, start_date, end_date, start_time, end_time,
     st.plotly_chart(fig)
 
 
-def create_pareto(df, category_column, value_column,duration_type):
+def create_pareto(df, category_column, value_column, duration_type):
+    # Define category colors
+    category_colors = {
+        "Production Time": "green",
+        "Unplanned Stoppages": "red",
+        "Not Occupied": "grey",
+        "Planned Stoppages": "yellow"
+    }
+    
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
     # Sort categories based on the sum of duration
     df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
-    #st.write(df.groupby(category_column)[value_column].sum())
 
     # Calculate cumulative percentage
     df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
@@ -119,9 +126,10 @@ def create_pareto(df, category_column, value_column,duration_type):
         y=df_sorted[value_column],
         name='Hours',
         text=df_sorted[value_column].round(2),  # Round the values to two decimal places
-        textposition='outside'  # Display text outside the bars
+        textposition='outside',  # Display text outside the bars
+        marker_color=[category_colors.get(category, "blue") for category in df_sorted[category_column]]  # Set bar colors based on category
     ))
-    
+
     # Add the cumulative percentage line
     fig.add_trace(go.Scatter(
         x=df_sorted[category_column],
@@ -130,7 +138,7 @@ def create_pareto(df, category_column, value_column,duration_type):
         line=dict(color="orange"),
         yaxis='y2'  # Secondary y-axis
     ))
-    
+
     # Update the layout
     fig.update_layout(
         title=f"✅ {category_column} Pareto Diagram",
