@@ -101,12 +101,18 @@ def create_timeline(df, default_cat, start_date, end_date, start_time, end_time,
 
 def create_pareto(df, category_column, value_column, duration_type):
     # Define category colors
-    category_colors = {
+    color_catalogue = {
         "Production Time": "green",
         "Unplanned Stoppages": "red",
         "Not Occupied": "grey",
         "Planned Stoppages": "yellow"
     }
+    if len(df['Reclassified Category'].unique()) == 1:
+        category_colors = {}
+        cateogry_col = df['Reclassified Category'].unique()
+        category_colors[cateogry_col] = color_catalogue.get(cateogry_col)
+    else:
+        category_colors = color_catalogue
     
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
