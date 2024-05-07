@@ -107,16 +107,13 @@ def create_pareto(df, category_column, value_column, duration_type):
         "Not Occupied": "grey",
         "Planned Stoppages": "yellow"
     }
-    st.write(df['Reclassified Category'].unique())
     if len(df['Reclassified Category'].unique()) == 1:
         category_colors = {}
         category_col = df['Reclassified Category'].unique()[0]
-        st.write(category_col)
         category_colors[category_col] = color_catalogue.get(category_col)
     else:
         category_colors = color_catalogue
-    st.write(category_colors)
-    
+        
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
@@ -160,7 +157,7 @@ def create_pareto(df, category_column, value_column, duration_type):
 
     # Update the layout
     fig.update_layout(
-        title=f"✅ {category_column} Pareto Diagram",
+        title=f"✅ {df['Reclassified Category'].unique()[0] if len(df['Reclassified Category'].unique()) == 1 else category_column} Pareto Diagram",
         height=500,
         yaxis=dict(
             title=duration_type
