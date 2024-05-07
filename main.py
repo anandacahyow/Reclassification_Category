@@ -111,9 +111,11 @@ def create_pareto(df, category_column, value_column, duration_type):
     # Get unique categories
     unique_categories = df[category_column].unique()
     
+    # If there's only one category, set the color directly
     if len(unique_categories) == 1:
         category = unique_categories[0]
-        category_colors = {category: color_catalogue.get(category, "blue")}
+        color = color_catalogue.get(category, "blue")
+        category_colors = {category: color}
     else:
         category_colors = color_catalogue
     
