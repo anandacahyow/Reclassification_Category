@@ -130,14 +130,24 @@ def create_pareto(df, category_column, value_column, duration_type):
     fig = go.Figure()
 
     # Add bars for frequencies with text outside the bars
-    fig.add_trace(go.Bar(
-        x=df_sorted[category_column],
-        y=df_sorted[value_column],
-        name='Hours',
-        text=df_sorted[value_column].round(2),  # Round the values to two decimal places
-        textposition='outside',  # Display text outside the bars
-        marker_color=list(category_colors.values())[0]
-    ))
+    if len(df['Reclassified Category'].unique()) == 1:
+        fig.add_trace(go.Bar(
+            x=df_sorted[category_column],
+            y=df_sorted[value_column],
+            name='Hours',
+            text=df_sorted[value_column].round(2),  # Round the values to two decimal places
+            textposition='outside',  # Display text outside the bars
+            marker_color=list(category_colors.values())[0]
+        ))
+    else:
+        fig.add_trace(go.Bar(
+            x=df_sorted[category_column],
+            y=df_sorted[value_column],
+            name='Hours',
+            text=df_sorted[value_column].round(2),  # Round the values to two decimal places
+            textposition='outside',  # Display text outside the bars
+            marker_color=[category_colors.get(category, "blue") for category in df_sorted[category_column]]  # Set bar colors based on category
+        ))
 
     # Add the cumulative percentage line
     fig.add_trace(go.Scatter(
