@@ -110,9 +110,9 @@ def create_pareto(df, category_column, value_column, duration_type):
     st.write(df['Reclassified Category'].unique())
     if len(df['Reclassified Category'].unique()) == 1:
         category_colors = {}
-        cateogry_col = df['Reclassified Category'].unique()[0]
+        category_col = df['Reclassified Category'].unique()[0]
         st.write(category_col)
-        category_colors[cateogry_col] = color_catalogue.get(cateogry_col)
+        category_colors[category_col] = color_catalogue.get(category_col)
     else:
         category_colors = color_catalogue
     
