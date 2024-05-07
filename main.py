@@ -107,15 +107,15 @@ def create_pareto(df, category_column, value_column, duration_type):
         "Not Occupied": "grey",
         "Planned Stoppages": "yellow"
     }
-    st.write(df['Reclassified Category'].unique())
-    if len(df['Reclassified Category'].unique()) == 1:
-        category_colors = {}
-        category_col = df['Reclassified Category'].unique()[0]
-        st.write(category_col)
-        category_colors[category_col] = color_catalogue.get(category_col)
+    
+    # Get unique categories
+    unique_categories = df[category_column].unique()
+    
+    if len(unique_categories) == 1:
+        category = unique_categories[0]
+        category_colors = {category: color_catalogue.get(category, "blue")}
     else:
         category_colors = color_catalogue
-    st.write(category_colors)
     
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
@@ -169,7 +169,7 @@ def create_pareto(df, category_column, value_column, duration_type):
         )
     )
     st.plotly_chart(fig)
-
+    
 def create_waterfall(df, category_column1, category_column2, value_column, duration_type):
     # Group data by category and sum the duration
     pivot_df = df.pivot_table(index=category_column1, values=value_column, aggfunc='sum')
