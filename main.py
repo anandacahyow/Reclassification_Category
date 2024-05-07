@@ -115,6 +115,7 @@ def create_pareto(df, category_column, value_column, duration_type):
         category_colors[category_col] = color_catalogue.get(category_col)
     else:
         category_colors = color_catalogue
+    st.write(category_colors)
     
     # Group data by category and sum the duration
     df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
