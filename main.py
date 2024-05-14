@@ -114,7 +114,7 @@ def create_pareto(df, category_column, value_column, duration_type):
     else:
         category_colors = color_catalogue
         
-    # Group data by category and sum the duration
+    # Group data by category and equipment, and sum the duration
     df_grouped = df.groupby([category_column, 'Reclassified Equipment'])[value_column].sum().unstack(fill_value=0).reset_index()
 
     # Sort categories based on the sum of duration
@@ -128,7 +128,7 @@ def create_pareto(df, category_column, value_column, duration_type):
     fig = go.Figure()
 
     # Add stacked bars for frequencies with text outside the bars
-    for i, equipment in enumerate(df_sorted.columns[1:-2]):  # Skip first column which is the category and last two columns which are 'total' and 'cumulative_percentage'
+    for i, equipment in enumerate(df_sorted.columns[1:-3]):  # Skip first column which is the category, last two columns which are 'total' and 'cumulative_percentage'
         fig.add_trace(go.Bar(
             x=df_sorted[category_column],
             y=df_sorted[equipment],
@@ -165,7 +165,8 @@ def create_pareto(df, category_column, value_column, duration_type):
             y=1.02,
             xanchor='right',
             x=1
-        )
+        ),
+        barmode='stack'  # Stack bars on top of each other
     )
     st.plotly_chart(fig)
 
