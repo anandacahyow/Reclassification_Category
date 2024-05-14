@@ -321,8 +321,12 @@ def main():
         available_category = df['Reclassified Category'].unique()
         for categories in available_category:
             data_cat = filtered_df[filtered_df['Reclassified Category'] == categories]
-            create_pareto(data_cat, "Reclassified Equipment", "Duration", duration_type)
-            st.dataframe(data_cat, height=150)
+            col1, col2 = st.columns(2)
+            with col1:
+                create_pareto(data_cat, "Reclassified Equipment", "Duration", duration_type)
+    
+            with col2:
+                st.dataframe(data_cat, height=450,width=200)
         
     st.sidebar.image("Nestle_Signature.png")
     st.sidebar.write("""<p style='font-size: 14px;'>This Web-App is designed to facilitate DOR member of PT Nestlé Indonesia - Panjang Factory in identifying DMO Performance Category reclassification and track compliance based on <b><a href="https://nestle.sharepoint.com/:b:/t/NMTTechnical2023/EZ2DQYyVfblDhGV11hbULU0BAPm34HHC5ZHCUERmFu3tnQ?e=IdQUp4" style="color:blue;">St-21.908-03 - Manufacturing Resources Performance Measurement Definition and Calculations</a></b></p>""", unsafe_allow_html=True)
