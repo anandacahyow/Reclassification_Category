@@ -128,17 +128,14 @@ def create_pareto(df, category_column, value_column, duration_type):
 
     # Add bars for frequencies with text outside the bars
     if len(df['Reclassified Category'].unique()) == 1:
-        st.write(df_sorted.columns[1:-3])
-        for i, equipment in enumerate(df_sorted.columns[1:-3]):  # Skip first column which is the category, last two columns which are 'total' and 'cumulative_percentage'
-            fig.add_trace(go.Bar(
-                x=df_sorted[category_column],
-                y=df_sorted[equipment],
-                name=equipment,
-                text=df_sorted[equipment].round(2),  # Round the values to two decimal places
-                textposition='inside',  # Display text inside the bars
-                marker_color=list(category_colors.values())[0]
-            ))
-            st.plotly_chart(fig)
+        fig.add_trace(go.Bar(
+            x=df_sorted[category_column],
+            y=df_sorted[value_column],
+            name='Hours',
+            text=df_sorted[value_column].round(2),  # Round the values to two decimal places
+            textposition='outside',  # Display text outside the bars
+            marker_color=list(category_colors.values())[0]
+        ))
     else:
         fig.add_trace(go.Bar(
             x=df_sorted[category_column],
@@ -176,8 +173,7 @@ def create_pareto(df, category_column, value_column, duration_type):
             y=1.02,
             xanchor='right',
             x=1
-        ),
-        barmode='stack'  # Stack bars on top of each other
+        )
     )
     st.plotly_chart(fig)
 
