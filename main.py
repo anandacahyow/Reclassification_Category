@@ -320,7 +320,7 @@ def main():
 
         st.write("📂 Detailed Breakdown of Performance based on Parameters")
         header_df = filtered_df.columns.tolist()
-        selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df, default='Reclassified Reason')
+        selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df)
         
         available_category = df['Reclassified Category'].unique()
         for categories in available_category:
