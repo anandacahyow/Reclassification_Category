@@ -128,7 +128,7 @@ def create_pareto(df, category_column, value_column, duration_type):
 
     # Add bars for frequencies with text outside the bars
     if len(df['Reclassified Category'].unique()) == 1:
-        if 'Equipment' in df.columns:  # Check if 'Equipment' column exists
+        if 'Reclassified Equipment' in df.columns:  # Check if 'Equipment' column exists
             for equipment, data in df.groupby('Equipment'):
                 fig.add_trace(go.Bar(
                     x=df_sorted[category_column],
