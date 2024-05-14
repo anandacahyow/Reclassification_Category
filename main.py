@@ -140,6 +140,8 @@ def create_pareto(df, category_column, value_column, duration_type):
                 marker_color=list(category_colors.values())[0]
             ))
     else:
+        st.write(value_column)
+        st.write(df_sorted[value_column])
         fig.add_trace(go.Bar(
             x=df_sorted[category_column],
             y=df_sorted[value_column],
