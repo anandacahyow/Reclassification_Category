@@ -321,7 +321,7 @@ def main():
         available_category = df['Reclassified Category'].unique()
         for categories in available_category:
             data_cat = filtered_df[filtered_df['Reclassified Category'] == categories]
-            create_pareto(data_cat, "Reclassified Reason", "Duration", duration_type)
+            create_pareto(data_cat, "Reclassified Equipment", "Duration", duration_type)
             st.dataframe(data_cat, height=150)
         
     st.sidebar.image("Nestle_Signature.png")
