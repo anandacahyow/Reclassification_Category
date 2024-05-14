@@ -135,7 +135,7 @@ def create_pareto(df, category_column, value_column, duration_type):
             name=equipment,
             text=df_sorted[equipment].round(2),  # Round the values to two decimal places
             textposition='inside',  # Display text inside the bars
-            marker_color=category_colors.get(df_sorted[category_column].iloc[0], "blue")  # Set bar color based on category
+            marker_color=category_colors.get(df_sorted[category_column], category_colors.get('Not Occupied', 'blue'))  # Set bar color based on category
         ))
 
     # Add the cumulative percentage line
