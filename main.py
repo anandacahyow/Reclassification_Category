@@ -128,14 +128,25 @@ def create_pareto(df, category_column, value_column, duration_type):
 
     # Add bars for frequencies with text outside the bars
     if len(df['Reclassified Category'].unique()) == 1:
-        fig.add_trace(go.Bar(
-            x=df_sorted[category_column],
-            y=df_sorted[value_column],
-            name='Hours',
-            text=df_sorted[value_column].round(2),  # Round the values to two decimal places
-            textposition='outside',  # Display text outside the bars
-            marker_color=list(category_colors.values())[0]
-        ))
+        if 'Equipment' in df.columns:  # Check if 'Equipment' column exists
+            for equipment, data in df.groupby('Equipment'):
+                fig.add_trace(go.Bar(
+                    x=df_sorted[category_column],
+                    y=data[value_column],
+                    name=equipment,
+                    text=data[value_column].round(2),  # Round the values to two decimal places
+                    textposition='inside',  # Display text inside the bars
+                    marker_color=category_colors.get(df_sorted[category_column].iloc[0], "blue")  # Set bar color based on category
+                ))
+        else:
+            fig.add_trace(go.Bar(
+                x=df_sorted[category_column],
+                y=df_sorted[value_column],
+                name='Hours',
+                text=df_sorted[value_column].round(2),  # Round the values to two decimal places
+                textposition='outside',  # Display text outside the bars
+                marker_color=list(category_colors.values())[0]
+            ))
     else:
         fig.add_trace(go.Bar(
             x=df_sorted[category_column],
