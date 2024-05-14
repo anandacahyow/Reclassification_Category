@@ -118,16 +118,17 @@ def create_pareto(df, category_column, value_column, duration_type):
     df_grouped = df.groupby([category_column, 'Reclassified Equipment'])[value_column].sum().unstack(fill_value=0).reset_index()
 
     # Sort categories based on the sum of duration
-    df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
+    df_grouped['total'] = df_grouped.drop(category_column, axis=1).sum(axis=1)
+    df_sorted = df_grouped.sort_values(by='total', ascending=False)
 
     # Calculate cumulative percentage
-    df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum(axis=1) / df_sorted[value_column].sum(axis=1).values[:, None]) * 100
+    df_sorted["cumulative_percentage"] = (df_sorted['total'].cumsum() / df_sorted['total'].sum()) * 100
 
     # Plot Pareto diagram
     fig = go.Figure()
 
     # Add stacked bars for frequencies with text outside the bars
-    for i, equipment in enumerate(df_sorted.columns[1:]):  # Skip first column which is the category
+    for i, equipment in enumerate(df_sorted.columns[1:-2]):  # Skip first column which is the category and last two columns which are 'total' and 'cumulative_percentage'
         fig.add_trace(go.Bar(
             x=df_sorted[category_column],
             y=df_sorted[equipment],
@@ -140,7 +141,7 @@ def create_pareto(df, category_column, value_column, duration_type):
     # Add the cumulative percentage line
     fig.add_trace(go.Scatter(
         x=df_sorted[category_column],
-        y=df_sorted['cumulative_percentage'].iloc[:, -1],
+        y=df_sorted['cumulative_percentage'],
         name='Cumulative Percentage',
         line=dict(color="navy"),
         yaxis='y2'  # Secondary y-axis
@@ -167,7 +168,6 @@ def create_pareto(df, category_column, value_column, duration_type):
         )
     )
     st.plotly_chart(fig)
-
 
 def create_waterfall(df, category_column1, category_column2, value_column, duration_type):
     # Group data by category and sum the duration
