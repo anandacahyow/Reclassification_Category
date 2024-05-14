@@ -114,20 +114,19 @@ def create_pareto(df, category_column, value_column, duration_type):
     else:
         category_colors = color_catalogue
         
-    # Group data by category and equipment, and sum the duration
-    df_grouped = df.groupby([category_column, 'Reclassified Equipment'])[value_column].sum().unstack(fill_value=0).reset_index()
+    # Group data by category and sum the duration
+    df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
 
     # Sort categories based on the sum of duration
-    df_grouped['total'] = df_grouped.drop(category_column, axis=1).sum(axis=1)
-    df_sorted = df_grouped.sort_values(by='total', ascending=False)
+    df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
 
     # Calculate cumulative percentage
-    df_sorted["cumulative_percentage"] = (df_sorted['total'].cumsum() / df_sorted['total'].sum()) * 100
+    df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
 
     # Plot Pareto diagram
     fig = go.Figure()
 
-        # Add bars for frequencies with text outside the bars
+    # Add bars for frequencies with text outside the bars
     if len(df['Reclassified Category'].unique()) == 1:
             # Add stacked bars for frequencies with text outside the bars
         for i, equipment in enumerate(df_sorted.columns[1:-3]):  # Skip first column which is the category, last two columns which are 'total' and 'cumulative_percentage'
