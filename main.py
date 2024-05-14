@@ -127,17 +127,16 @@ def create_pareto(df, category_column, value_column, duration_type):
     # Plot Pareto diagram
     fig = go.Figure()
 
-    # Add stacked bars for frequencies with text outside the bars
-    for i, equipment in enumerate(df_sorted.columns[1:-3]):  # Skip first column which is the category, last two columns which are 'total' and 'cumulative_percentage'
-        for j, row in df_sorted.iterrows():
-            fig.add_trace(go.Bar(
-                x=[row[category_column]],
-                y=[row[equipment]],
-                name=equipment,
-                text=[row[equipment].round(2)],  # Round the values to two decimal places
-                textposition='inside',  # Display text inside the bars
-                marker_color=category_colors.get(row[category_column], category_colors.get('Not Occupied', 'blue'))  # Set bar color based on category
-            ))
+    # Add stacked bars for frequencies with text inside the bars
+    for equipment in df_sorted.columns[1:-3]:  # Skip first column which is the category, last two columns which are 'total' and 'cumulative_percentage'
+        fig.add_trace(go.Bar(
+            x=df_sorted[category_column],
+            y=df_sorted[equipment],
+            name=equipment,
+            text=df_sorted[equipment].round(2),  # Round the values to two decimal places
+            textposition='inside',  # Display text inside the bars
+            marker_color=category_colors.get(df_sorted[category_column], category_colors.get('Not Occupied', 'blue'))  # Set bar color based on category
+        ))
 
     # Add the cumulative percentage line
     fig.add_trace(go.Scatter(
