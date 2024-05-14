@@ -127,15 +127,26 @@ def create_pareto(df, category_column, value_column, duration_type):
     # Plot Pareto diagram
     fig = go.Figure()
 
-    # Add stacked bars for frequencies with text outside the bars
-    for i, equipment in enumerate(df_sorted.columns[1:-3]):  # Skip first column which is the category, last two columns which are 'total' and 'cumulative_percentage'
+        # Add bars for frequencies with text outside the bars
+    if len(df['Reclassified Category'].unique()) == 1:
+            # Add stacked bars for frequencies with text outside the bars
+        for i, equipment in enumerate(df_sorted.columns[1:-3]):  # Skip first column which is the category, last two columns which are 'total' and 'cumulative_percentage'
+            fig.add_trace(go.Bar(
+                x=df_sorted[category_column],
+                y=df_sorted[equipment],
+                name=equipment,
+                text=df_sorted[equipment].round(2),  # Round the values to two decimal places
+                textposition='inside',  # Display text inside the bars
+                marker_color=list(category_colors.values())[0]
+            ))
+    else:
         fig.add_trace(go.Bar(
             x=df_sorted[category_column],
-            y=df_sorted[equipment],
-            name=equipment,
-            text=df_sorted[equipment].round(2),  # Round the values to two decimal places
-            textposition='inside',  # Display text inside the bars
-            marker_color=category_colors.get(df_sorted[category_column].iloc[0], "blue")  # Set bar color based on category
+            y=df_sorted[value_column],
+            name='Hours',
+            text=df_sorted[value_column].round(2),  # Round the values to two decimal places
+            textposition='outside',  # Display text outside the bars
+            marker_color=[category_colors.get(category, "blue") for category in df_sorted[category_column]]  # Set bar colors based on category
         ))
 
     # Add the cumulative percentage line
