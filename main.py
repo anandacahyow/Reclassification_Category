@@ -318,12 +318,16 @@ def main():
         
         create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration", duration_type)
 
+        st.write("📂 Detailed Breakdown of Performance based on Parameters")
+        header_df = filtered_df.columns.tolist()
+        selected_header = st.sidebar.multiselect("Choose what parameter to breakdown the Pareto:", header_df, default='Reclassified Reason')
+        
         available_category = df['Reclassified Category'].unique()
         for categories in available_category:
             data_cat = filtered_df[filtered_df['Reclassified Category'] == categories]
             col1, col2 = st.columns(2)
             with col1:
-                create_pareto(data_cat, "Reclassified Equipment", "Duration", duration_type)
+                create_pareto(data_cat, selected_header, "Duration", duration_type)
     
             with col2:
                 st.write(data_cat, height=450,width=200)
