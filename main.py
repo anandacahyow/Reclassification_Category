@@ -115,52 +115,32 @@ def create_pareto(df, category_column, value_column, duration_type):
         category_colors = color_catalogue
         
     # Group data by category and sum the duration
-    df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
+    df_grouped = df.groupby([category_column, 'Equipment'])[value_column].sum().unstack(fill_value=0).reset_index()
 
     # Sort categories based on the sum of duration
     df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
 
     # Calculate cumulative percentage
-    df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
+    df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum(axis=1) / df_sorted[value_column].sum(axis=1).values[:, None]) * 100
 
     # Plot Pareto diagram
     fig = go.Figure()
 
-    # Add bars for frequencies with text outside the bars
-    if len(df['Reclassified Category'].unique()) == 1:
-        if 'Reclassified Equipment' in df.columns:  # Check if 'Equipment' column exists
-            for equipment, data in df.groupby('Reclassified Equipment'):
-                fig.add_trace(go.Bar(
-                    x=df_sorted[category_column],
-                    y=data[value_column],
-                    name=equipment,
-                    text=data[value_column].round(2),  # Round the values to two decimal places
-                    textposition='inside',  # Display text inside the bars
-                    marker_color=category_colors.get(df_sorted[category_column].iloc[0], "blue")  # Set bar color based on category
-                ))
-        else:
-            fig.add_trace(go.Bar(
-                x=df_sorted[category_column],
-                y=df_sorted[value_column],
-                name='Hours',
-                text=df_sorted[value_column].round(2),  # Round the values to two decimal places
-                textposition='outside',  # Display text outside the bars
-                marker_color=list(category_colors.values())[0]
-            ))
-    else:
+    # Add stacked bars for frequencies with text outside the bars
+    for i, equipment in enumerate(df_sorted.columns[1:]):  # Skip first column which is the category
         fig.add_trace(go.Bar(
             x=df_sorted[category_column],
-            y=df_sorted[value_column],
-            name='Hours',
-            text=df_sorted[value_column].round(2),  # Round the values to two decimal places
-            textposition='outside',  # Display text outside the bars
-            marker_color=[category_colors.get(category, "blue") for category in df_sorted[category_column]]  # Set bar colors based on category
+            y=df_sorted[equipment],
+            name=equipment,
+            text=df_sorted[equipment].round(2),  # Round the values to two decimal places
+            textposition='inside',  # Display text inside the bars
+            marker_color=category_colors.get(df_sorted[category_column].iloc[0], "blue")  # Set bar color based on category
         ))
 
     # Add the cumulative percentage line
     fig.add_trace(go.Scatter(
         x=df_sorted[category_column],
-        y=df_sorted['cumulative_percentage'],
+        y=df_sorted['cumulative_percentage'].iloc[:, -1],
         name='Cumulative Percentage',
         line=dict(color="navy"),
         yaxis='y2'  # Secondary y-axis
@@ -187,6 +167,7 @@ def create_pareto(df, category_column, value_column, duration_type):
         )
     )
     st.plotly_chart(fig)
+
 
 def create_waterfall(df, category_column1, category_column2, value_column, duration_type):
     # Group data by category and sum the duration
