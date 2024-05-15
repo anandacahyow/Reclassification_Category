@@ -256,7 +256,7 @@ def main():
         st.sidebar.title("🔍 Data Filter:")
 
         # Create a multi-select dropdown for category filter in the sidebar
-        default_cat = st.sidebar.selectbox("Select Category", ["Original Category", "Reclassified Category"], index=0)
+        default_cat = st.sidebar.selectbox("Select Category", ["Original Category", "Reclassified Category"], index=1)
         available_categories = df['Original Category'].unique()
         #selected_categories = st.sidebar.multiselect("Select categories", available_categories, default=available_categories)
         selected_categories = [category for category in available_categories if st.sidebar.checkbox(category, value=True)]
@@ -322,9 +322,9 @@ def main():
         header_df = filtered_df.columns.tolist()
         selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df, index=header_df.index('Reclassified Reason'))
         
-        available_category = df['Reclassified Category'].unique()
+        available_category = df[selected_categories].unique()
         for categories in available_category:
-            data_cat = filtered_df[filtered_df['Reclassified Category'] == categories]
+            data_cat = filtered_df[filtered_df[selected_categories] == categories]
             col1, col2 = st.columns(2)
             with col1:
                 create_pareto(data_cat, selected_header, "Duration", duration_type)
