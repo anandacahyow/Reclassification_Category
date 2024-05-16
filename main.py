@@ -327,7 +327,6 @@ def main():
             data_cat = filtered_df[filtered_df[default_cat] == category]
             col1, col2 = st.columns(2)
             with col1:
-                st.write(selected_header)
                 create_pareto(data_cat, selected_header, "Duration", duration_type, default_cat)
             with col2:
                 st.write(data_cat, height=450, width=150)
