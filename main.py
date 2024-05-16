@@ -157,7 +157,7 @@ def create_pareto(df, category_column, value_column, duration_type, avail_cat):
 
     # Update the layout
     fig.update_layout(
-        title=f"✅ {df['Reclassified Category'].unique()[0] if len(df['Reclassified Category'].unique()) == 1 else category_column} Pareto Diagram",
+        title=f"✅ {df[avail_cat].unique()[0] if len(df[avail_cat].unique()) == 1 else category_column} Pareto Diagram",
         height=500,
         yaxis=dict(
             title=duration_type
