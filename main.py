@@ -328,6 +328,7 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 create_pareto(data_cat, selected_header, "Duration", duration_type)
+    
             with col2:
                 st.write(data_cat, height=450,width=150)
         
