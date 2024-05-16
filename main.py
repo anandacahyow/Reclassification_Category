@@ -325,6 +325,7 @@ def main():
         st.write(df)
         st.write(selected_categories)
         available_category = df[selected_categories].unique()
+        st.write(df[selected_categories])
         for categories in available_category:
             data_cat = filtered_df[filtered_df[selected_categories] == categories]
             col1, col2 = st.columns(2)
