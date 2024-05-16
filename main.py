@@ -275,12 +275,12 @@ def main():
             time_factor = 1 / (3600 * 24)
         filtered_df['Duration'] = time_factor * (filtered_df['End Datetime'] - filtered_df['Start Datetime']).dt.total_seconds()
 
-        st.write("📅 DMO Event Listing")
-        st.dataframe(filtered_df, height=150)
-
         # Use threading for creating plots
         timeline_thread1 = Thread(target=create_timeline, args=(df, default_cat, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Original Equipment"))
         timeline_thread2 = Thread(target=create_timeline, args=(df, default_cat, start_date, end_date, start_time, end_time, selected_categories, selected_equipment, "Reclassified Equipment"))
+
+        st.write("📅 DMO Event Listing")
+        st.dataframe(filtered_df, height=150)
 
         pareto_thread1 = Thread(target=create_pareto, args=(filtered_df, "Original Category", "Duration", duration_type, default_cat))
         pareto_thread2 = Thread(target=create_pareto, args=(filtered_df, "Reclassified Category", "Duration", duration_type, default_cat))
