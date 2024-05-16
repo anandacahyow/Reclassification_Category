@@ -324,10 +324,10 @@ def main():
 
         st.write(df)
         st.write(default_cat)
-        st.write(df[default_cat])
         available_category = df[default_cat].unique()
+        st.write(available_category)
         for categories in available_category:
-            data_cat = filtered_df[filtered_df[selected_categories] == categories]
+            data_cat = filtered_df[filtered_df[available_category] == categories]
             col1, col2 = st.columns(2)
             with col1:
                 create_pareto(data_cat, selected_header, "Duration", duration_type)
