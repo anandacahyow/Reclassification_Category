@@ -322,15 +322,12 @@ def main():
         header_df = filtered_df.columns.tolist()
         selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df, index=header_df.index('Reclassified Reason'))
 
-        st.write(df)
-        st.write(default_cat)
         available_category = df[default_cat].unique()
-        st.write(available_category)
-        st.write(filtered_df[default_cat])
         for category in available_category:
             data_cat = filtered_df[filtered_df[default_cat] == category]
             col1, col2 = st.columns(2)
             with col1:
+                st.write(selected_header)
                 create_pareto(data_cat, selected_header, "Duration", duration_type, default_cat)
             with col2:
                 st.write(data_cat, height=450, width=150)
