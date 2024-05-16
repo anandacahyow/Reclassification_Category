@@ -99,7 +99,7 @@ def create_timeline(df, default_cat, start_date, end_date, start_time, end_time,
     st.plotly_chart(fig)
 
 
-def create_pareto(df, category_column, value_column, duration_type):
+def create_pareto(df, category_column, value_column, duration_type, avail_cat):
     # Define category colors
     color_catalogue = {
         "Production Time": "green",
@@ -107,9 +107,9 @@ def create_pareto(df, category_column, value_column, duration_type):
         "Not Occupied": "grey",
         "Planned Stoppages": "yellow"
     }
-    if len(df['Reclassified Category'].unique()) == 1:
+    if len(df[avail_cat].unique()) == 1:
         category_colors = {}
-        category_col = df['Reclassified Category'].unique()[0]
+        category_col = df[avail_cat].unique()[0]
         category_colors[category_col] = color_catalogue.get(category_col)
     else:
         category_colors = color_catalogue
@@ -127,7 +127,7 @@ def create_pareto(df, category_column, value_column, duration_type):
     fig = go.Figure()
 
     # Add bars for frequencies with text outside the bars
-    if len(df['Reclassified Category'].unique()) == 1:
+    if len(df[avail_cat].unique()) == 1:
         fig.add_trace(go.Bar(
             x=df_sorted[category_column],
             y=df_sorted[value_column],
@@ -311,10 +311,10 @@ def main():
         # Create Pareto diagram for Both Category
         col1, col2 = st.columns(2)
         with col1:
-            create_pareto(filtered_df, "Original Category", "Duration", duration_type)
+            create_pareto(filtered_df, "Original Category", "Duration", duration_type, default_cat)
 
         with col2:
-            create_pareto(filtered_df, "Reclassified Category", "Duration", duration_type)
+            create_pareto(filtered_df, "Reclassified Category", "Duration", duration_type, default_cat)
         
         create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration", duration_type)
 
@@ -331,7 +331,7 @@ def main():
             data_cat = filtered_df[filtered_df[default_cat] == category]
             col1, col2 = st.columns(2)
             with col1:
-                create_pareto(data_cat, selected_header, "Duration", duration_type)
+                create_pareto(data_cat, selected_header, "Duration", duration_type, default_cat)
             with col2:
                 st.write(data_cat, height=450, width=150)
 
