@@ -424,7 +424,7 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 #create_pareto(data_cat, "Reclassified Reason", "Duration", duration_type, selected_header_filter)
-                create_pareto_with_colors(data_cat, "Reclassified Reason", "Duration", duration_type, color_column=data_cat['Reclassified Category'])
+                create_pareto_with_colors(data_cat, "Reclassified Reason", "Duration", duration_type, color_column='Reclassified Category')
             with col2:
                 st.write(data_cat, height=450, width=150)
 
