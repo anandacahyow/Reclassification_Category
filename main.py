@@ -177,7 +177,7 @@ def create_pareto(df, category_column, value_column, duration_type, avail_cat):
     )
     st.plotly_chart(fig)
 
-def create_pareto_with_colors(df, category_column, value_column, duration_type, color_column=None):
+def create_pareto_with_colors(df, category_column, value_column, duration_type, color_column):
     # Define category colors
     color_catalogue = {
         "Production Time": "green",
