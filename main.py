@@ -318,7 +318,7 @@ def main():
         
         create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration", duration_type)
 
-        st.write("📂 Detailed Breakdown of Performance based on Parameters")
+        st.title("📂 Detailed Breakdown of Performance based on Parameters")
         header_df = filtered_df.columns.tolist()
         selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df, index=header_df.index('Reclassified Reason'))
 
@@ -332,7 +332,7 @@ def main():
                 st.write(data_cat, height=450, width=150)
 
 
-        st.write("📂 Detailed Breakdown of Performance based on Sub Category")
+        st.title("📂 Detailed Breakdown of Performance based on Sub Category")
         header_df2 = filtered_df.columns.tolist()
         selected_header2 = st.selectbox("Choose what subcategory to breakdown the Pareto :", header_df2)
 
@@ -344,12 +344,11 @@ def main():
         for equipment in filtered_df[selected_header_filter].unique():
             # Filter the data for the current equipment
             data_cat = filtered_df[filtered_df[selected_header_filter] == equipment]
-            
-            # Display the equipment name as a header
-            st.header(f"Pareto for {equipment}")
-            
-            # Create a Pareto chart for the current equipment based on the reclassified reason
-            create_pareto(data_cat, "Reclassified Reason", "Duration", duration_type, selected_header_filter)
+            col1, col2 = st.columns(2)
+            with col1:
+                create_pareto(data_cat, "Reclassified Reason", "Duration", duration_type, selected_header_filter)
+            with col2:
+                st.write(data_cat, height=450, width=150)
 
         
     st.sidebar.image("Nestle_Signature.png")
