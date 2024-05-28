@@ -336,19 +336,16 @@ def main():
         header_df2 = filtered_df.columns.tolist()
         selected_header2 = st.selectbox("Choose what subcategory to breakdown the Pareto :", header_df2)
 
-        st.write("another filter")
         header_filter = filtered_df.columns.tolist()
         selected_header_filter = st.selectbox("Choose what subcat2 to breakdown the Pareto:", header_filter)
         
         filter_column = st.selectbox("Choose a column to filter by:", filtered_df[selected_header_filter].unique())
-        filter_value = st.selectbox(f"Choose a value to filter {filter_column}:", df[filter_column].unique())
 
-        available_category = df[default_cat].unique()
-        for category in available_category:
-            data_cat = filtered_df[filtered_df[default_cat] == category]
+        for category in filter_column:
+            data_cat = filtered_df[filtered_df[selected_header_filter] == category]
             col1, col2 = st.columns(2)
             with col1:
-                create_pareto(data_cat, selected_header, "Duration", duration_type, default_cat)
+                create_pareto(data_cat, selected_header2, "Duration", duration_type, selected_header_filter)
             with col2:
                 st.write(data_cat, height=450, width=150)
 
