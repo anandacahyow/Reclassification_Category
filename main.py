@@ -341,13 +341,15 @@ def main():
         
         filter_column = st.selectbox("Choose a column to filter by:", filtered_df[selected_header_filter].unique())
 
-        for category in filter_column:
-            data_cat = filtered_df[filtered_df[selected_header_filter] == category]
-            col1, col2 = st.columns(2)
-            with col1:
-                create_pareto(data_cat, selected_header2, "Duration", duration_type, selected_header_filter)
-            with col2:
-                st.write(data_cat, height=450, width=150)
+        for equipment in filtered_df[selected_header_filter].unique():
+            # Filter the data for the current equipment
+            data_cat = filtered_df[filtered_df[selected_header_filter] == equipment]
+            
+            # Display the equipment name as a header
+            st.header(f"Pareto for {equipment}")
+            
+            # Create a Pareto chart for the current equipment based on the reclassified reason
+            create_pareto(data_cat, "Reclassified Reason", "Duration", duration_type, selected_header_filter)
 
         
     st.sidebar.image("Nestle_Signature.png")
