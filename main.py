@@ -336,6 +336,12 @@ def main():
         header_df = filtered_df.columns.tolist()
         selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df, index=header_df.index('Reclassified Reason'))
 
+        header_filter = filtered_df.columns.tolist()
+        selected_header_filter = st.selectbox("Choose what parameter to breakdown the Pareto:", header_filter)
+        
+        filter_column = st.selectbox("Choose a column to filter by:", selected_header_filter.unique())
+        filter_value = st.selectbox(f"Choose a value to filter {filter_column}:", df[filter_column].unique())
+
         available_category = df[default_cat].unique()
         for category in available_category:
             data_cat = filtered_df[filtered_df[default_cat] == category]
