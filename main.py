@@ -232,7 +232,7 @@ def create_pareto_with_colors(df, category_column, value_column, duration_type, 
 
     # Update the layout
     fig.update_layout(
-        title=f"✅ {paretoed_param} Pareto Diagram",
+        title=f"⚠ {paretoed_param} Pareto Diagram",
         height=500,
         yaxis=dict(
             title=duration_type
