@@ -334,7 +334,7 @@ def main():
 
         st.write("📂 Detailed Breakdown of Performance based on Sub Category")
         header_df2 = filtered_df.columns.tolist()
-        selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df2, index=header_df2.index('Reclassified Reason'))
+        selected_header2 = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df2, index=header_df2.index('Reclassified Reason'))
 
         header_filter = filtered_df.columns.tolist()
         selected_header_filter = st.selectbox("Choose what parameter to breakdown the Pareto:", header_filter)
