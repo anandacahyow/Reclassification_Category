@@ -395,7 +395,7 @@ def main():
         
         create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration", duration_type)
 
-        st.title("📂 Detailed Breakdown of Performance based on Parameters")
+        st.title("📂 Overall Line Performance (Overview)")
         header_df = filtered_df.columns.tolist()
         selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df, index=header_df.index('Reclassified Reason'))
 
@@ -409,7 +409,7 @@ def main():
                 st.write(data_cat, height=450, width=150)
 
 
-        st.title("📂 Detailed Breakdown of Performance based on Sub Category")
+        st.title("📂 Detailed Line Performance (Specific Parameters)")
         header_df2 = filtered_df.columns.tolist()
         selected_header2 = st.selectbox("Choose what Parameter to breakdown the Pareto :", header_df2)
 
