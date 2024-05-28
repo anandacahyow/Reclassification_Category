@@ -340,7 +340,7 @@ def main():
         header_filter = filtered_df.columns.tolist()
         selected_header_filter = st.selectbox("Choose what subcat2 to breakdown the Pareto:", header_filter)
         
-        filter_column = st.selectbox("Choose a column to filter by:", selected_header_filter.unique())
+        filter_column = st.selectbox("Choose a column to filter by:", filtered_df[selected_header_filter].unique())
         filter_value = st.selectbox(f"Choose a value to filter {filter_column}:", df[filter_column].unique())
 
         available_category = df[default_cat].unique()
