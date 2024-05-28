@@ -94,7 +94,7 @@ def create_timeline(df, default_cat, start_date, end_date, start_time, end_time,
     fig.update_layout(title=f"🕔 Duration of {y_axis}",
                       xaxis_title="Datetime",
                       yaxis_title=y_axis,
-                      width=1200,
+                      width=1300,
                       height=400)
     st.plotly_chart(fig)
 
