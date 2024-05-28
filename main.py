@@ -177,6 +177,83 @@ def create_pareto(df, category_column, value_column, duration_type, avail_cat):
     )
     st.plotly_chart(fig)
 
+def create_pareto_with_colors(df, category_column, value_column, duration_type, color_column=None):
+    # Define category colors
+    color_catalogue = {
+        "Production Time": "green",
+        "Unplanned Stoppages": "red",
+        "Not Occupied": "grey",
+        "Planned Stoppages": "yellow"
+    }
+
+    # Group data by category and sum the duration
+    df_grouped = df.groupby(category_column)[value_column].sum().reset_index()
+
+    # Sort categories based on the sum of duration
+    df_sorted = df_grouped.sort_values(by=value_column, ascending=False)
+
+    # Calculate cumulative percentage
+    df_sorted["cumulative_percentage"] = (df_sorted[value_column].cumsum() / df_sorted[value_column].sum()) * 100
+
+    # Initialize list to store bar colors
+    bar_colors = []
+
+    # If color_column is provided, assign colors dynamically based on its values
+    if color_column:
+        for category in df_sorted[category_column]:
+            corresponding_color = color_catalogue.get(df[df[category_column] == category][color_column].iloc[0], "blue")
+            bar_colors.append(corresponding_color)
+    else:
+        # Use default color for all bars if color_column is not provided
+        default_color = "blue"
+        bar_colors = [default_color] * len(df_sorted)
+
+    # Plot Pareto diagram
+    fig = go.Figure()
+
+    # Add bars for frequencies with text outside the bars
+    fig.add_trace(go.Bar(
+        x=df_sorted[category_column],
+        y=df_sorted[value_column],
+        name='Hours',
+        text=df_sorted[value_column].round(2),  # Round the values to two decimal places
+        textposition='outside',  # Display text outside the bars
+        marker_color=bar_colors  # Set bar colors based on category
+    ))
+
+    # Add the cumulative percentage line
+    fig.add_trace(go.Scatter(
+        x=df_sorted[category_column],
+        y=df_sorted['cumulative_percentage'],
+        name='Cumulative Percentage',
+        line=dict(color="navy"),
+        yaxis='y2'  # Secondary y-axis
+    ))
+
+    # Update the layout
+    fig.update_layout(
+        title=f"✅ Pareto Diagram ({category_column})",
+        height=500,
+        yaxis=dict(
+            title=duration_type
+        ),
+        yaxis2=dict(
+            title='Cumulative Percentage (%)',
+            overlaying='y',
+            side='right'
+        ),
+        legend=dict(
+            orientation='h',
+            yanchor='bottom',
+            y=1.02,
+            xanchor='right',
+            x=1
+        )
+    )
+
+    #return fig
+    st.plotly_chart(fig)
+
 def create_waterfall(df, category_column1, category_column2, value_column, duration_type):
     # Group data by category and sum the duration
     pivot_df = df.pivot_table(index=category_column1, values=value_column, aggfunc='sum')
@@ -346,7 +423,8 @@ def main():
             data_cat = filtered_df[filtered_df[selected_header_filter] == equipment]
             col1, col2 = st.columns(2)
             with col1:
-                create_pareto(data_cat, "Reclassified Reason", "Duration", duration_type, selected_header_filter)
+                #create_pareto(data_cat, "Reclassified Reason", "Duration", duration_type, selected_header_filter)
+                create_pareto_with_colors(data_cat, "Reclassified Reason", "Duration", duration_type, color_column=selected_header_filter)
             with col2:
                 st.write(data_cat, height=450, width=150)
 
