@@ -411,12 +411,12 @@ def main():
 
         st.title("📂 Detailed Breakdown of Performance based on Sub Category")
         header_df2 = filtered_df.columns.tolist()
-        selected_header2 = st.selectbox("Choose what subcategory to breakdown the Pareto :", header_df2)
+        selected_header2 = st.selectbox("Choose what Parameter to breakdown the Pareto :", header_df2)
 
         header_filter = filtered_df.columns.tolist()
-        selected_header_filter = st.selectbox("Choose what subcat2 to breakdown the Pareto:", header_filter)
+        selected_header_filter = st.selectbox("Choose what Parameter to be Pareto-ed:", header_filter)
         
-        filter_column = st.selectbox("Choose a column to filter by:", filtered_df[selected_header_filter].unique())
+        #filter_column = st.selectbox("Specify the :", filtered_df[selected_header_filter].unique())
 
         for equipment in filtered_df[selected_header_filter].unique():
             # Filter the data for the current equipment
