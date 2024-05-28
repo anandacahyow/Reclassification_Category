@@ -177,7 +177,7 @@ def create_pareto(df, category_column, value_column, duration_type, avail_cat):
     )
     st.plotly_chart(fig)
 
-def create_pareto_with_colors(df, category_column, value_column, duration_type, color_column):
+def create_pareto_with_colors(df, category_column, value_column, duration_type, paretoed_param, color_column):
     # Define category colors
     color_catalogue = {
         "Production Time": "green",
@@ -232,7 +232,7 @@ def create_pareto_with_colors(df, category_column, value_column, duration_type, 
 
     # Update the layout
     fig.update_layout(
-        title=f"✅ Pareto Diagram ({category_column})",
+        title=f"✅ {paretoed_param} Pareto Diagram",
         height=500,
         yaxis=dict(
             title=duration_type
@@ -423,8 +423,7 @@ def main():
             data_cat = filtered_df[filtered_df[selected_header_filter] == equipment]
             col1, col2 = st.columns(2)
             with col1:
-                #create_pareto(data_cat, "Reclassified Reason", "Duration", duration_type, selected_header_filter)
-                create_pareto_with_colors(data_cat, "Reclassified Reason", "Duration", duration_type, color_column='Reclassified Category')
+                create_pareto_with_colors(data_cat, "Reclassified Reason", "Duration", duration_type, equipment, color_column='Reclassified Category')
             with col2:
                 st.write(data_cat, height=450, width=150)
 
