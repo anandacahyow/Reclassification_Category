@@ -319,17 +319,30 @@ def main():
         create_waterfall(filtered_df,"Original Category","Reclassified Category", "Duration", duration_type)
 
         st.write("📂 Detailed Breakdown of Performance based on Parameters")
-        header_df = filtered_df.columns.tolist()
+        
+        # Select a parameter for the Pareto breakdown
+        header_df = df.columns.tolist()
         selected_header = st.selectbox("Choose what parameter to breakdown the Pareto:", header_df, index=header_df.index('Reclassified Reason'))
-
-        available_category = df[default_cat].unique()
+        
+        # Select the column to filter by
+        filter_column = st.selectbox("Choose a column to filter by:", header_df)
+        
+        # Select the value within the chosen column to filter
+        filter_value = st.selectbox(f"Choose a value to filter {filter_column}:", df[filter_column].unique())
+        
+        # Filter the dataframe based on the selected column and value
+        filtered_df = df[df[filter_column] == filter_value]
+        
+        # Loop through available categories and create Pareto charts and tables for each
+        available_category = filtered_df[default_cat].unique()
         for category in available_category:
             data_cat = filtered_df[filtered_df[default_cat] == category]
             col1, col2 = st.columns(2)
             with col1:
                 create_pareto(data_cat, selected_header, "Duration", duration_type, default_cat)
             with col2:
-                st.write(data_cat, height=450, width=150)
+                st.write(data_cat)
+
 
         
     st.sidebar.image("Nestle_Signature.png")
