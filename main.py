@@ -423,7 +423,8 @@ def main():
             data_cat = filtered_df[filtered_df[selected_header_filter] == equipment]
             col1, col2 = st.columns(2)
             with col1:
-                create_pareto_with_colors(data_cat, "Reclassified Reason", "Duration", duration_type, equipment, color_column='Reclassified Category')
+                #create_pareto_with_colors(data_cat, "Reclassified Reason", "Duration", duration_type, equipment, color_column='Reclassified Category')
+                create_pareto_with_colors(data_cat, selected_header_filter, "Duration", duration_type, equipment, color_column='Reclassified Category')
             with col2:
                 st.write(data_cat, height=450, width=150)
 
